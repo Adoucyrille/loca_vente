@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 16 juin 2025 à 03:09
+-- Généré le : lun. 16 juin 2025 à 10:36
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `appli_base` (
 --
 
 INSERT INTO `appli_base` (`id`, `numero`, `email`, `localisation`, `imagelogo`, `about`, `jour_ouverture`, `jour_fermeture`, `heure_ouverture`, `heure_fermeture`) VALUES
-(1, '0759225434', 'adouauto@gmail.com', 'Abidjan-Yopougon', 'logos/logo-light4_VqQu1bI.PNG', 'Où la qualité rencontre l\'abordabilité. Nous comprenons l’importance d’un voyage fluide et agréable sans le fardeau de coûts excessifs. C\'est pourquoi nous avons méticuleusement élaboré nos offres pour vous proposer des véhicules haut de gamme à un coût minimum.', 'Lundi', 'Samedi', '08:00:00.000000', '20:00:00.000000');
+(1, '0759225434', 'adouauto@gmail.com', 'Abidjan-Yopougon', 'logos/logo-light4_VqQu1bI.PNG', 'Là où la qualité rencontre l\'abordabilité. Nous comprenons l’importance d’un voyage fluide et agréable sans le fardeau de coûts excessifs. C\'est pourquoi nous avons méticuleusement élaboré nos offres pour vous proposer des véhicules haut de gamme à un coût minimum.', 'Lundi', 'Samedi', '08:00:00.000000', '20:00:00.000000');
 
 -- --------------------------------------------------------
 
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `appli_caracteristiquetechnique` (
   `nombre_sieges` smallint UNSIGNED NOT NULL,
   `nombre_portes` smallint UNSIGNED NOT NULL,
   `vitesse_max` smallint UNSIGNED NOT NULL,
-  `climatisation` tinyint(1) NOT NULL,
+  `climatisation` tinyint(1) DEFAULT NULL,
   `transmission` varchar(10) NOT NULL,
   `carburant` varchar(10) NOT NULL,
   `consommation` double DEFAULT NULL,
@@ -143,7 +143,8 @@ INSERT INTO `appli_caracteristiquetechnique` (`id`, `nombre_sieges`, `nombre_por
 (14, 4, 4, 200, 0, 'AUTO', 'ESSENCE', 6.8, 14),
 (15, 4, 2, 410, 1, 'AUTO', 'HYBRIDE', 14, 15),
 (16, 4, 2, 325, 1, 'AUTO', 'ESSENCE', 15.2, 16),
-(17, 4, 2, 326, 1, 'AUTO', 'ESSENCE', 11.6, 17);
+(17, 4, 2, 326, 1, 'AUTO', 'ESSENCE', 11.6, 17),
+(18, 5, 5, 444, NULL, 'AUTO', 'DIESEL', 4, 18);
 
 -- --------------------------------------------------------
 
@@ -400,8 +401,8 @@ CREATE TABLE IF NOT EXISTS `appli_utilisateur` (
 --
 
 INSERT INTO `appli_utilisateur` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`, `telephone`, `adresse`) VALUES
-(1, 'pbkdf2_sha256$600000$J9cSbqv7V8ssLaMgTyZTUn$FSZDTZMxEdPVe70y1h8BeuBCXjfKWlzkWcBm13Ayc1Y=', '2025-06-16 02:40:45.845734', 1, 'adoulocation', '', '', '', 1, 1, '2025-06-02 10:17:02.316485', NULL, NULL),
-(5, 'pbkdf2_sha256$600000$ksE51G5lM8XHyiDhbBzUu7$uRXKN64O7211nOqwnJhEUfELej2QOpCeSGoEOb1SMiQ=', '2025-06-16 03:08:02.353501', 0, 'John', 'ADOU', 'JOHN', 'cyrieadu3@gmail.com', 0, 1, '2025-06-08 19:09:49.413822', '5342625262', 'poy'),
+(1, 'pbkdf2_sha256$600000$J9cSbqv7V8ssLaMgTyZTUn$FSZDTZMxEdPVe70y1h8BeuBCXjfKWlzkWcBm13Ayc1Y=', '2025-06-16 09:26:56.654663', 1, 'adoulocation', '', '', '', 1, 1, '2025-06-02 10:17:02.316485', NULL, NULL),
+(5, 'pbkdf2_sha256$600000$ksE51G5lM8XHyiDhbBzUu7$uRXKN64O7211nOqwnJhEUfELej2QOpCeSGoEOb1SMiQ=', '2025-06-16 10:29:53.104115', 0, 'John', 'ADOU', 'JOHN', 'cyrieadu3@gmail.com', 0, 1, '2025-06-08 19:09:49.413822', '5342625262', 'poy'),
 (4, 'pbkdf2_sha256$600000$Z5G4RvLK1TNPoNbIDqLRTe$VOD0fD57fEx8jHDh8xk5KGwS0X/6A1blBMNZVxGneKE=', '2025-06-07 00:02:12.059598', 0, 'hasard', 'aze', 'ver', 'cyrieadou3@gmail.com', 0, 1, '2025-06-07 00:02:11.527235', '5342625262', 'HYTR'),
 (6, 'pbkdf2_sha256$600000$XtC6ss2pANbBdr6mEMgKff$iGwmpE4Ynu6DsXj4CSm+beFxqcmxY7OcWarXFC4gBKw=', '2025-06-08 23:08:11.661534', 0, 'djan', 'KOUASSI', 'JOHN', 'cyrilleado@gmail.com', 0, 1, '2025-06-08 23:08:11.126856', '53426252', 'poy'),
 (7, 'pbkdf2_sha256$600000$S67Pyx5nmcpUf36I8ZgBTB$eqZZzd/G8Jrp+TPZBfeDy1f1Ulz97uOJ5R5Yofa4v8A=', '2025-06-12 18:55:48.339535', 0, 'hasar', '', '', 'cyrieadou4@gmail.com', 0, 1, '2025-06-12 18:55:47.794583', '0768543212', 'Abidjan, Yopougon'),
@@ -460,7 +461,7 @@ CREATE TABLE IF NOT EXISTS `appli_vehicule` (
   `image` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `immatriculation` (`immatriculation`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `appli_vehicule`
@@ -483,7 +484,8 @@ INSERT INTO `appli_vehicule` (`id`, `type_vehicule`, `marque`, `modele`, `immatr
 (14, 'luxe', 'vw', 'polo', 'AB-1277-CD', 1, '40000.00', 'vehicules/vw-polo.jpg'),
 (15, 'vvip', 'koenigsegg', 'Regera 2022', 'AB-1335-CD', 1, '80000.00', 'vehicules/koenigsegg.jpg'),
 (16, 'vvip', 'Lamborghini', 'Huracán Técnica', 'AB-1444-CD', 1, '70000.00', 'vehicules/Lamborghini3.jpg'),
-(17, 'vvip', 'Maserati', 'MC20 coupé', 'AB-1222-CD', 1, '200000.00', 'vehicules/merveille.jpg');
+(17, 'vvip', 'Maserati', 'MC20 coupé', 'AB-1222-CD', 1, '200000.00', 'vehicules/merveille.jpg'),
+(18, 'simple', 'FFFFF', 'EEEEE', 'AB-3333-CD', 0, '444.00', 'vehicules/Minibus.jpg');
 
 -- --------------------------------------------------------
 
@@ -785,7 +787,9 @@ INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`,
 (95, '2025-06-16 00:45:41.164134', '2', 'KONE', 1, '[{\"added\": {}}]', 20, 1),
 (96, '2025-06-16 00:47:13.972874', '3', 'AKA', 1, '[{\"added\": {}}]', 20, 1),
 (97, '2025-06-16 00:50:01.210555', '4', 'SEKONGO', 1, '[{\"added\": {}}]', 20, 1),
-(98, '2025-06-16 00:51:01.929471', '5', 'KOUASSI', 1, '[{\"added\": {}}]', 20, 1);
+(98, '2025-06-16 00:51:01.929471', '5', 'KOUASSI', 1, '[{\"added\": {}}]', 20, 1),
+(99, '2025-06-16 09:35:18.889583', '1', 'adouauto@gmail.com - Abidjan-Yopougon', 2, '[{\"changed\": {\"fields\": [\"About\"]}}]', 9, 1),
+(100, '2025-06-16 10:12:30.278673', '18', 'FFFFF EEEEE - AB-3333-CD', 1, '[{\"added\": {}}, {\"added\": {\"name\": \"caracteristique technique\", \"object\": \"Caract. techniques de FFFFF EEEEE - AB-3333-CD\"}}]', 6, 1);
 
 -- --------------------------------------------------------
 
@@ -842,7 +846,7 @@ CREATE TABLE IF NOT EXISTS `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `django_migrations`
@@ -884,7 +888,8 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (33, 'Appli', '0015_direction', '2025-06-15 19:11:04.107990'),
 (34, 'Appli', '0016_publicite', '2025-06-15 23:36:28.303350'),
 (35, 'Appli', '0017_publicite_photo', '2025-06-15 23:42:46.147122'),
-(36, 'Appli', '0018_alter_publicite_titre_alter_reservation_date_debut', '2025-06-16 00:18:00.056799');
+(36, 'Appli', '0018_alter_publicite_titre_alter_reservation_date_debut', '2025-06-16 00:18:00.056799'),
+(37, 'Appli', '0019_alter_caracteristiquetechnique_climatisation', '2025-06-16 10:08:33.285173');
 
 -- --------------------------------------------------------
 
@@ -906,7 +911,7 @@ CREATE TABLE IF NOT EXISTS `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
-('j74mark02ggmt0qpn5sho7t0ffc33t8o', '.eJxVjEEOgjAQRe_StWnKdNqCS_eegUxnBkENTSisjHdXEha6_e-9_zI9bevYb1WXfhJzNsGcfrdM_NB5B3Kn-VYsl3ldpmx3xR602msRfV4O9-9gpDp-6xaHVkOKQ8QQOKbcQSOEIpEcJHXkfECB1HlIERkTM6tvQEFAshvM-wPR3zek:1uR0CY:yY6Zp1LDyFFiJv148NzjlHPbK9UWDXxjLWdmMAV1lv8', '2025-06-30 03:08:02.356505');
+('8m9wwkk0u0qubimfe10xiktwuh56xo8v', '.eJxVjEEOgjAQRe_StWnKdNqCS_eegUxnBkENTSisjHdXEha6_e-9_zI9bevYb1WXfhJzNsGcfrdM_NB5B3Kn-VYsl3ldpmx3xR602msRfV4O9-9gpDp-6xaHVkOKQ8QQOKbcQSOEIpEcJHXkfECB1HlIERkTM6tvQEFAshvM-wPR3zek:1uR769:HrSWqcsVFNJkyQuzq5Vs7yiEQV9yJAQ4Tic-aUepgp0', '2025-06-30 10:29:53.108107');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
