@@ -1,0 +1,177 @@
+
+
+{% extends 'Appli/base.html' %} 
+{% load static %}     
+{% block navbarfooter %}
+        <!-- content begin -->
+        <div class="no-bottom no-top" id="content">
+            <div id="top"></div>
+            
+            <!-- section begin -->
+            <section id="subheader" class="jarallax text-light">
+                <img src="{% static 'assets/images/background/subheader.jpg'%}" class="jarallax-img" alt="">
+                    <div class="center-y relative text-center">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+									<h1>S'inscrire</h1>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+            </section>
+            <!-- section close -->
+            
+
+            <section aria-label="section">
+                <div class="container">
+					<div class="row">
+						<div class="col-md-8 offset-md-2">
+							<h3>Vous n'avez pas de compte ? Inscrivez-vous maintenant.</h3>
+                            <p> Bienvenue chez ADOU AUTO. Nous sommes ravis de vous avoir à bord. En créant un compte chez nous, vous aurez accès à une gamme d'avantages et de fonctionnalités pratiques qui amélioreront votre expérience de location de voiture</p>
+							
+							<div class="spacer-10"></div>
+                            {% if messages %}
+                            {% for message in messages %}
+                                <p style="color: {% if message.tags == 'success' %}green{% else %}red{% endif %};">
+                                {{ message }}
+                                </p>
+                            {% endfor %}
+                            {% endif %}
+                            
+							
+							<form name="contactForm" id='contact_form' class="form-border" method="post" action="{% url 'inscrire' %} ">
+                              
+
+                                {% csrf_token %}
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="field-set">
+                                            <label>Nom:</label>
+                                            <input type='text' name='first_name' id='first_name' class="form-control" 
+                                                value="{{ values.first_name|default:'' }}">
+                                            {% if field_errors.first_name %}
+                                            <small class="text-danger">{{ field_errors.first_name }}</small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="field-set">
+                                            <label>Prénoms:</label>
+                                            <input type='text' name='last_name' id='last_name' class="form-control"
+                                                value="{{ values.last_name|default:'' }}">
+                                            {% if field_errors.last_name %}
+                                            <small class="text-danger">{{ field_errors.last_name }}</small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="field-set">
+                                            <label>Email:</label>
+                                            <input type='text' name='email' id='email' class="form-control"
+                                                value="{{ values.email|default:'' }}">
+                                            {% if field_errors.email %}
+                                            <small class="text-danger">{{ field_errors.email }}</small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="field-set">
+                                            <label>Nom d'utilisateur:</label>
+                                            <input type='text' name='username' id='username' class="form-control"
+                                                value="{{ values.username|default:'' }}">
+                                            {% if field_errors.username %}
+                                            <small class="text-danger">{{ field_errors.username }}</small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="field-set">
+                                            <label>Téléphone:</label>
+                                            <input type='text' name='phone' id='phone' class="form-control"
+                                                value="{{ values.telephone|default:'' }}">
+                                            {% if field_errors.phone %}
+                                            <small class="text-danger">{{ field_errors.phone }}</small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="field-set">
+                                            <label>Domicile:</label>
+                                            <input type='text' name='domicile' id='domicile' class="form-control"
+                                                value="{{ values.adresse|default:'' }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="field-set">
+                                            <label>Mot de passe:</label>
+                                            <input type='password' name='password' id='password' class="form-control">
+                                            {% if field_errors.password %}
+                                            <small class="text-danger">{{ field_errors.password }}</small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="field-set">
+                                            <label>Confirmer mot de passe:</label>
+                                            <input type='password' name='password2' id='password2' class="form-control">
+                                            {% if field_errors.password2 %}
+                                            <small class="text-danger">{{ field_errors.password2 }}</small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+      
+
+
+                                    <div class="col-md-12">
+
+                                        <div id='submit' class="pull-left">
+                                            <input type='submit' id='send_message' value='inscrivez-vous maintenant' class="btn-main color-2">
+                                        </div>
+                                       
+
+                                        <div id='mail_success' class='success'>Votre inscription a été prise en compte avec succes.</div>
+                                         {% if error %}
+                                        <div style="color: red;" id='mail_fail' class='error'> {{ error }}</div>
+                                        {% endif %}
+                                        <div class="clearfix"></div>
+
+                                    </div>
+                                    <div>
+                                            <p> Déjà inscrire?<a class="btn-main btn-fullwidth rounded-3" href="{% url 'connexion' %}">Connectez-vous</a></p>
+                                    </div>
+
+                                </div>
+                            </form>
+							
+						</div>
+                    </div>
+				</div>
+            </section>
+			
+			
+        </div>
+        <!-- content close -->
+
+        <a href="register.html#" id="back-to-top"></a>
+        
+      
+        
+    </div>
+
+    <!-- Javascript Files
+    ================================================== -->
+    <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="{% static 'assets/js/plugins.js'%}"></script>
+    <script src="{% static 'assets/js/designesia.js'%}"></script>
+
+    {% endblock %}

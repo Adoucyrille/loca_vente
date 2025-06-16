@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="Fr">
+
+<head>
+    <title>ADOU AUTO</title>
+    <link rel="icon" href="{% static 'assets/images/icon.png' %}" type="image/gif" sizes="16x16">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Rentaly - Multipurpose Vehicle Car Rental Website Template" name="description">
+    <meta content="" name="keywords">
+    <meta content="" name="author">
+    <!-- CSS Files
+    ================================================== -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" id="bootstrap">
+    <link href="{% static 'assets/css/mdb.min.css' %}" rel="stylesheet" type="text/css" id="mdb">
+    <link href="{% static 'assets/css/plugins.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/coloring.css' %}" rel="stylesheet" type="text/css">
+    <!-- color scheme -->
+    <link id="colors" href="{% static 'assets/css/colors/scheme-01.css' %}" rel="stylesheet" type="text/css">
+</head>
+
+<body onload="initialize()">
+    <div id="wrapper">
+        <!-- page de prechargement commence -->
+        <div id="de-preloader"></div>
+        <!-- page de prechargement  se termine -->
+        
+       
+
+        <!-- header commence -->
+        <header class="transparent scroll-light has-topbar">
+            {% for base in bases %}
+            <div id="topbar" class="topbar-dark text-light">
+                <div class="container">
+                    
+                    <div class="topbar-left xs-hide">
+                        <div class="topbar-widget">
+                            <div class="topbar-widget"><a href="index.html#"><i class="fa fa-phone"></i>{{base.numero}}</a></div>
+                            <div class="topbar-widget"><a href="index.html#"><i class="fa fa-envelope"></i><span class="__cf_email__" data-cfemail="d8bbb7b6acb9bbac98aabdb6acb9b4a1f6bbb7b5">[{{base.email}}]</span></a></div>
+                            <div class="topbar-widget"><a href="index.html#"><i class="fa fa-clock-o">Disponible en presentiel</i>{{base.jour_ouverture}} - {{base.jour_fermeture}} {{base.heure_ouverture}} - {{base.heure_fermeture}}</a></div>
+                        </div>
+                    </div>
+                
+                    <div class="topbar-right">
+                        <div class="social-icons">
+                            <a href="index.html#"><i class="fa fa-facebook fa-lg"></i></a>
+                            <a href="index.html#"><i class="fa fa-twitter fa-lg"></i></a>
+                            <a href="index.html#"><i class="fa fa-youtube fa-lg"></i></a>
+                            <a href="index.html#"><i class="fa fa-pinterest fa-lg"></i></a>
+                            <a href="index.html#"><i class="fa fa-instagram fa-lg"></i></a>
+                        </div>
+                    </div>  
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="de-flex sm-pt10">
+                            <div class="de-flex-col">
+                                <div class="de-flex-col">
+                                    <!-- logo begin -->
+                                    <div id="logo">
+                                        <a href="index.html">
+                                            <img class="logo-1" src="{{base.imagelogo.url}}" alt="">
+                                            <img class="logo-2" src="{{base.imagelogo.url}}" alt="">
+                                        </a>
+                                    </div>
+                                    <!-- logo close -->
+                                </div>
+                            </div>
+                            <div class="de-flex-col header-col-mid">
+                                <ul id="mainmenu">
+                                    <li><a class="menu-item" href="{% url 'accueil' %}">ACCUEIL</a>
+                                        
+                                    </li>
+                                    <li><a class="menu-item" href="{% url 'cars' %}">VEHICULE</a>
+                                        <ul>
+                                            <li><a class="menu-item" href="{% url 'cars' %}">LISTE DE VEHICULE</a></li>
+                                            
+                                        </ul>
+                                    </li>
+                                    <li><a class="menu-item" href="{% url 'reser' %}">RESERVATIONS</a>
+                                        
+                                    </li>
+                                    <li><a class="menu-item" href="{% url 'commandes' %}">Mes Réservations</a>
+                                    </li>
+                                    <li><a class="menu-item" href="index.html#">Pages</a>
+                                        <ul>
+                                            <li><a class="menu-item" href="{% url 'contact' %}">Contact</a></li>
+                                            <li><a class="menu-item" href="{% url 'connexion' %}l">Se connecter</a></li>
+                                            <li><a class="menu-item" href="{% url 'inscrire' %}">S'inscrire</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="menu-item" href="{% url 'propos' %}">A PROPOS DE NOUS</a>
+                                        
+                                    </li>
+                                    
+                            </div>
+                            <div class="de-flex-col">
+                                <div class="menu_side_area">
+                                    <a href="{% url 'deconnexion' %}" class="btn-main">Se deconnecter</a>
+                                    <span id="menu-btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>aucune données</p>
+            </div>
+            {%endfor%}
+        </header>
+        <!-- header close -->
+
+        {% block navbarfooter %} {% endblock %}
+     <!-- footer begin -->
+        <footer class="text-light">
+            {% for base in bases %}
+            <div class="container">
+                <div class="row g-custom-x">
+                    <div class="col-lg-3">
+                        <div class="widget">
+                            <h5 style="text-transform: uppercase;">à propos de ADOU aUTO</h5>
+                            <p>{{base.about}}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-3">
+                        <div class="widget">
+                            <h5>Contact Info</h5>
+                            <address class="s1">
+                                <span><i class="id-color fa fa-map-marker fa-lg"></i>{{base.localisation}}</span>
+                                <span><i class="id-color fa fa-phone fa-lg"></i>{{base.numero}}</span>
+                                <span><i class="id-color fa fa-envelope-o fa-lg"></i><a href="https://www.madebydesignesia.com/cdn-cgi/l/email-protection#187b77766c797b6c587d60797568747d367b7775"><span class="__cf_email__" data-cfemail="4b2824253f2a283f0b2e332a263b272e65282426">[{{base.email}}]</span></a></span
+                            </address>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <h5>Liens rapides</h5>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="widget">
+                                    <ul>
+                                        <li><a href="{% url 'propos' %}">A propos</a></li>
+                                        <li><a href="{% url 'reser' %}">Reservation</a></li>
+                                        <li><a href="{% url 'accueil' %}">Accueil</a></li>
+                                        <li><a href="{% url 'cars' %}">vehecules</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="widget">
+                            <h5>Reseaux sociaux</h5>
+                            <div class="social-icons">
+                                <a href="index.html#"><i class="fa fa-facebook fa-lg"></i></a>
+                                <a href="index.html#"><i class="fa fa-twitter fa-lg"></i></a>
+                                <a href="index.html#"><i class="fa fa-linkedin fa-lg"></i></a>
+                                <a href="index.html#"><i class="fa fa-pinterest fa-lg"></i></a>
+                                <a href="index.html#"><i class="fa fa-rss fa-lg"></i></a>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+            <div class="subfooter">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="de-flex">
+                                <div class="de-flex-col">
+                                    <a href="index.html">
+                                        Copyright 2025 - Location par ADOU AUTO
+                                    </a>
+                                </div>
+                                <ul class="menu-simple">
+                                    <li><a href="">Terms &amp; Conditions</a></li>
+                                    <li><a href="">Politique de confidentialité</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             {% endfor %}
+        </footer>
+        <!-- footer close -->     
+        
+      
+         
+</body>
+
+</html>                 

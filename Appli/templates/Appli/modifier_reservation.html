@@ -1,0 +1,36 @@
+{% extends 'Appli/base.html' %}
+{% load static %}     
+{% block navbarfooter %}
+
+<div>
+     <div id="top"></div>
+    <section id="section-hero" aria-label="section" class="jarallax">
+         {% for fond in fonds %}
+        <img src="{{fond.imagefond.url}}" class="jarallax-img" alt=""> 
+        {%endfor%}
+
+</div>
+<div class="container mt-5">
+    <h3>Modifier ma réservation</h3>
+    <form method="post">
+        {% csrf_token %}
+        <label>Date de début :</label>
+        <input type="date" name="date_debut" class="form-control" value="{{ reservation.date_debut }}" required>
+        
+        <label>Date de fin :</label>
+        <input type="date" name="date_fin" class="form-control" value="{{ reservation.date_fin }}" required>
+
+        <label>Lieu de prise :</label>
+        <input type="text" name="lieu_prise" class="form-control" value="{{ reservation.lieu_prise }}" required>
+
+        <label>Destination :</label>
+        <input type="text" name="destination" class="form-control" value="{{ reservation.destination }}" required>
+
+        <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
+    </form>
+</div>
+<script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="{% static 'assets/js/plugins.js' %}"></script>
+<script src="{% static 'assets/js/designesia.js' %}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgiM7ogCAA2Y5pgSk2KXZfxF5S_1jsptA&amp;libraries=places&amp;callback=initPlaces" async="" defer=""></script>
+
+{% endblock %}

@@ -1,0 +1,333 @@
+{% extends 'Appli/base.html' %} 
+{% load static %}     
+{% block navbarfooter %} 
+
+<style>
+   .img-avis {
+    width: 100%;
+    height: 500px; /* Ajuste cette hauteur selon ton besoin */
+    object-fit: cover;
+    object-position: center;
+    border-radius: 8px; /* Optionnel */
+    image-rendering: auto; /* Améliore le rendu */
+    display: block;
+}
+
+    
+</style>
+
+<div class="no-bottom no-top" id="content">
+    <div id="top"></div>
+    <section id="section-hero" aria-label="section" class="jarallax">
+         {% for fond in fonds %}
+        <img src="{{fond.imagefond.url}}" class="jarallax-img" alt=""> 
+        {%endfor%}
+
+
+              <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-12 text-light">
+                            <div class="spacer-double"></div>
+                            <div class="spacer-double"></div>
+                            <h1 class="mb-2">Vous recherchez un <span class="id-color">véhicule</span>? Vous êtes au bon endroit.</h1>
+                            <div class="spacer-single"></div>
+                        </div>
+                       <div class="spacer-double"></div>
+                    <div class="row text-light">
+                    
+                            <div class="col-12">
+                                <div class="container-timeline">
+                         <ul>
+                            {% for parti in parti1accueil %}
+                                <li>
+                                    <h4> {{ parti.titre }}</h4>
+                                    <p>{{ parti.description }}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+            </section>
+            <section aria-label="section" class="pt40 pb40 text-light" data-bgcolor="#111111">
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <p style="color: {% if message.tags == 'success' %}green{% else %}red{% endif %};">
+                        {{ message }}
+                        </p>
+                    {% endfor %}
+                    {% endif %}
+                <div class="wow fadeInRight d-flex">
+                  <div class="de-marquee-list">
+                   
+                    <div class="d-item">
+                        {% for defil in defiles %} 
+                      <span class="d-item-txt">{{defil.titre}}</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                    {%empty%}
+                     </div>
+                   {%endfor%}
+                  </div>
+                </div>
+            </section>
+
+            <section aria-label="section">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 offset-lg-3 text-center">
+                            <span class="subtitle">Pourquoi nous choisir</h2></span>
+                            <h2>Nos fonctionnalités</h2>
+                            <p>Découvrez un monde de commodité, de sécurité et de personnalisation, ouvrant la voie à des aventures inoubliables et à des solutions de mobilité fluides.</p>
+                            <div class="spacer-20"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-lg-3">
+                            {% for choie in choi %}
+                            <div class="box-icon s2 p-small mb20 wow fadeInRight" data-wow-delay=".65s">
+                                <i class="fa bg-color fa-trophy"></i>
+                                <div class="d-inner">
+                                    <h4>{{choie.titre}}</h4>
+                                    {{choie.description}}.
+                                </div>
+                            </div>
+                            {%endfor%}
+                           
+                        </div>
+
+                        <div class="col-lg-6">
+                            <img src="{% static  'assets/images/misc/car.png' %}" alt="" class="img-fluid wow fadeInUp">
+                        </div>
+
+                        <div class="col-lg-3">
+                            {% for cho in choi2 %}
+                            <div class="box-icon s2 d-invert p-small mb20 wow fadeInL fadeInLeft" data-wow-delay="1s">
+                                <i class="fa bg-color fa-tag"></i>
+                                <div class="d-inner">
+                                    <h4>{{cho.titre}}</h4>
+                                     {{cho.description}}
+                                </div>
+                            </div>
+                            {%endfor%}
+                           
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="text-light jarallax">
+                {% for pub in publicite %}
+                <img src="{{pub.photo.url}}" class="jarallax-img" alt="">
+                <div class="container">
+                    <div class="row g-5">
+                        <div class="col-lg-6 wow fadeInRight">
+                            <h2><span> {{pub.titre}}</span></h2>
+                        </div>
+                        <div class="col-lg-6 wow fadeInLeft">
+                         {{pub.description}}
+                        </div>
+                    </div>
+                
+                </div>
+                {%endfor%}
+            </section>
+
+            <section id="section-cars">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 offset-lg-3 text-center">
+                            <span class="subtitle">Profitez de votre balade</h2></span>
+                            <h2>Notre flotte de véhicules</h2>
+                            <p>Réalisez vos rêves avec une flotte exquise de véhicules polyvalents pour des voyages inoubliables.</p>
+                            <div class="spacer-20"></div>
+                        </div>
+                       <div id="items-carousel" class="owl-carousel wow fadeIn">
+                        {% for voiture in vehicules %}
+                            <div class="col-lg-12">
+                                <div class="de-item mb30">
+                                    <div class="d-img">
+                                        <img src="{{ voiture.image.url }}" class="img-fluid" alt="">
+                                    </div>
+                                    <div class="d-info">
+                                        <div class="d-text">
+                                            <h4>{{ voiture.marque }} {{ voiture.modele }}</h4>
+                                            <div class="d-item_like">
+                                                <i class="fa fa-heart"></i><span>0</span>
+                                            </div>
+                                            <div class="d-atr-group">
+                                                <span class="d-atr"><img src="{% static 'assets/images/icons/1-green.svg' %}" alt="">{{ voiture.type_vehicule }}</span>
+                                                <span class="d-atr"><img src="{% static 'assets/images/icons/2-green.svg' %}" alt="">Disponible:{{ voiture.disponible|yesno:"Oui,Non" }}</span>
+                                                <span class="d-atr"><img src="{% static 'assets/images/icons/3-green.svg' %}" alt="">{{ voiture.immatriculation }}</span>
+                                                
+                                            </div>
+                                            <div class="d-price">
+                                                Prix par jour: <span>{{ voiture.prix_par_jour }} FCFA</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                    {% empty %}
+                        <p>Aucune voiture disponible.</p>
+                    {% endfor %}
+                </div>
+
+                            
+            </section>
+
+            <section id="section-news">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 offset-lg-3 text-center">
+                            <span class="subtitle">Dernières nouveautés de notre part</h2></span>
+                            <h2>Actualités &amp; Promo</h2>
+                            <p>Dernières nouvelles, nouvelles perspectives et couverture approfondie - restez en tête avec nos dernières nouvelles, informations et analyses.</p>
+                            <div class="spacer-20"></div>
+                        </div>
+                        {% for actu in actua %}       
+                        <div class="col-lg-4 mb10">
+                             
+                            <div class="bloglist s2 item">
+                                <div class="post-content">
+                                    <div class="post-image">
+                                        <div class="date-box">
+                                            <div class="m">{{actu.jour}}</div>
+                                            <div class="d">{{actu.mois}}</div>
+                                        </div>
+                                        <img alt="" src="{{actu.imageactu.url}}" class="lazy">
+                                    </div>
+                                    <div class="post-text">                            
+                                        <h4><a href="news-single.html">{{actu.titre}}<span></span></a></h4>
+                                        <p>{{actu.description}}</p>
+                                        <button type="button" class="btn-main" data-bs-toggle="modal" data-bs-target="#modal-{{actu.id}}">
+                                        Lire plus
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {%endfor%}
+                    </div>
+                </div>
+                {% for actu in actua %}  
+                <div class="modal fade" id="modal-{{actu.id}}" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle">{{actu.titre}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="fermer"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{actu.modal}}.</p>
+                        <!-- Tu peux ajouter plus de contenu ici -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"style="background-color: green;" data-bs-dismiss="modal">fermer</button>
+                    </div>
+                    </div>
+                </div>
+                </div>
+                {%endfor%}
+
+            </section>
+
+            <section id="section-testimonials" class="no-top no-bottom">
+                  
+                <div class="container-fluid">
+                   
+                    <div class="row g-2 p-2 align-items-center">
+                         
+                        {% for avis in impress %}
+                        <div class="col-md-4">
+                            <div class="de-image-text">
+                                <div class="d-text">
+                                    <div class="d-quote id-color"><i class="fa fa-quote-right"></i></div>
+                                    <h4>Excellent service ! Service de location de voiture</h4>
+                                    <blockquote>
+                                        {{avis.description}}
+                                       <span class="by">{{avis.utilisateur}}</span>
+                                   </blockquote>
+                                </div> 
+                                <img src="{{avis.photo.url}}" class="img-fluid img-avis" alt="">
+                            </div>
+                        </div>
+                       {%endfor%}
+                    </div>
+                     
+                </div>
+               
+            </section>
+
+           <section id="section-faq">
+                <div class="container">
+                    <div class="row">
+                        <div class="col text-center">
+                            <span class="subtitle">As-tu</span>
+                            <h2>Des questions ?</h2>
+                            <div class="spacer-20"></div>
+                        </div>
+                    </div>
+
+                    <div class="row g-custom-x">
+                        {% for question in quit %}
+                        <div class="col-md-6 wow fadeInUp">
+                            <div class="accordion secondary">
+                                <div class="accordion-section">
+                                    <div class="accordion-section-title" data-tab="#accordion-{{question.id}}">
+                                        {{question.titre}}
+                                    </div>
+                                    <div class="accordion-section-content" id="accordion-{{question.id}}">
+                                        <p>{{question.reponse}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-call-to-action" class="bg-color-2 pt60 pb60 text-light">
+                <div class="container">
+                    <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-4 offset-lg-2">
+                             <span class="subtitle text-white">Appelez-nous pour plus d'informations</span>
+                            <h2 class="s2">Le service client de ADOU AUTO est là pour vous aider à tout moment.</h2>
+                        </div>
+
+                        <div class="col-lg-4 text-lg-center text-sm-center">
+                            <div class="phone-num-big">
+                                <i class="fa fa-phone"></i>
+                                <span class="pnb-text">
+                                   Appelez-nous maintenant
+                                </span>
+                                {% for base in bases %}
+                                <span class="pnb-num">
+                                    {{base.numero}}
+                                </span>
+                                {%endfor%}
+                            </div>
+                            <a href="{% url 'contact' %}" class="btn-main">Contactez nous</a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </section>
+            
+        </div>
+        <!-- content close -->
+        <a href="index.html#" id="back-to-top"></a>
+        <!-- footer begin -->
+       
+    </div>
+    
+    <!-- Javascript Files
+    ================================================== -->
+    <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="{% static 'assets/js/plugins.js' %}"></script>
+    <script src="{% static 'assets/js/designesia.js' %}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgiM7ogCAA2Y5pgSk2KXZfxF5S_1jsptA&amp;libraries=places&amp;callback=initPlaces" async="" defer=""></script>
+
+{% endblock %}

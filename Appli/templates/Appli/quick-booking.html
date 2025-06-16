@@ -1,0 +1,231 @@
+ 
+{% extends 'Appli/base.html' %} 
+{% load static %}     
+{% block navbarfooter %}
+        <!-- content begin -->
+
+        <style>
+            #vehicule-preview {
+            border: 2px solid #ddd;
+            margin-top: 10px;
+            }
+        </style>
+        <div class="no-bottom no-top" id="content">
+            <div id="top"></div>
+            
+            <!-- section begin -->
+            <section id="subheader" class="jarallax text-light">
+                 {% for fond in fonds %}
+                 <img src="{{fond.imagefond.url}}" class="jarallax-img" alt=""> 
+                {%endfor%}
+                    <div class="center-y relative text-center">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+									                  <h1>Réservation</h1>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+            </section>
+            <!-- section close -->
+
+            <section id="section-hero" aria-label="section" class="no-top" data-bgcolor="#121212">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-12 mt-80 sm-mt-0">
+                            <div class="spacer-single sm-hide"></div>
+                            <div id="booking_form_wrap" class="padding40 rounded-5 shadow-soft" data-bgcolor="#ffffff">
+                                
+                               <form method="post" enctype="multipart/form-data" action="{% url 'reser' %}">
+                                    {% csrf_token %}
+
+                                    <div class="row">
+                                        <!-- Sélection du véhicule -->
+                                        <div class="col-lg-6">
+                                            <label for="vehicule">Véhicule</label>
+                                            <select name="vehicule" id="vehicule" class="form-control" required>
+                                                {% for voiture in vehicules %}
+                                                    <option value="{{ voiture.id }}" data-img="{{ voiture.image.url }}">
+                                                        {{ voiture.marque }} {{ voiture.modele }} - prix par jour: {{ voiture.prix_par_jour }} FCFA
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                            <div class="mt-3">
+                                                <img id="vehicule-preview" src="{{ vehicules.0.image.url }}" alt="Aperçu véhicule"
+                                                    class="img-thumbnail" style="max-height: 200px;">
+                                            </div>
+                                        </div>
+
+                                        <!-- Lieu de prise en charge -->
+                                        <div class="col-lg-6">
+                                            <label for="lieu_prise">Lieu de prise en charge</label>
+                                            <select name="lieu_prise" id="lieu_prise" class="form-control" required>
+                                                <option value="yopougon">Yopougon</option>
+                                                <option value="cocody">Cocody</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <!-- Destination -->
+                                        <div class="col-lg-6">
+                                            <label for="destination">Destination</label>
+                                            <select name="destination" id="destination" class="form-control" required>
+                                                {% for vil in city %}
+                                                    <option value="{{ vil.titre }}">{{ vil.titre }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <!-- Prix total -->
+                                        <div class="col-lg-6">
+                                            <label for="prix_total">Montant à payer</label>
+                                            <input type="text" id="prix_total" name="prix_total" class="form-control" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <!-- Date début -->
+                                        <div class="col-lg-6">
+                                            <label for="date_debut">Date de début</label>
+                                            <input type="date" id="date_debut" name="date_debut" class="form-control" required>
+                                        </div>
+
+                                        <!-- Date fin -->
+                                        <div class="col-lg-6">
+                                            <label for="date_fin">Date de fin</label>
+                                            <input type="date" id="date_fin" name="date_fin" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <!-- Pièce d'identité recto -->
+                                        <div class="col-lg-6">
+                                            <label for="piece_identite_recto">Pièce d'identité (Recto)</label>
+                                            <input type="file" name="piece_identite_recto" id="piece_identite_recto" class="form-control" accept="image/*,.pdf" required>
+                                        </div>
+
+                                        <!-- Pièce d'identité verso -->
+                                        <div class="col-lg-6">
+                                            <label for="piece_identite_verso">Pièce d'identité (Verso)</label>
+                                            <input type="file" name="piece_identite_verso" id="piece_identite_verso" class="form-control" accept="image/*,.pdf" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12 mt-4">
+                                            <button type="submit" class="btn btn-primary w-100">Valider la réservation</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                </div>
+                        </div>
+                    </div>
+                     <div class="row text-light">
+                    
+                            <div class="col-12">
+                                <div class="container-timeline">
+                         <ul>
+                            {% for parti in parti1accueil %}
+                                <li>
+                                    <h4> {{ parti.titre }}</h4>
+                                    <p>{{ parti.description }}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </section>
+            <section aria-label="section" class="pt40 pb40 text-light">
+                <div class="wow fadeInRight d-flex">
+                  <div class="de-marquee-list">
+                   
+                    <div class="d-item">
+                        {% for defil in defiles %} 
+                      <span class="d-item-txt">{{defil.titre}}</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                    {%empty%}
+                     </div>
+                   {%endfor%}
+                  </div>
+                </div>
+
+                  <div class="wow fadeInRight d-flex">
+                  <div class="de-marquee-list">
+                   
+                    <div class="d-item">
+                        {% for defil in defiles %} 
+                      <span class="d-item-txt">{{defil.titre}}</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                    {%empty%}
+                     </div>
+                   {%endfor%}
+                  </div>
+                </div>
+                </div>
+            </section>
+
+			
+        </div>
+        <!-- content close -->
+
+        <a href="quick-booking.html#" id="back-to-top"></a>
+        
+     
+
+
+    <!-- Javascript Files
+    ================================================== -->
+    <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="{% static 'assets/js/plugins.js'%}"></script>
+    <script src="{% static 'assets/js/designesia.js'%}"></script>
+    <script src="{% static 'assets/js/validation-booking.js'%}"></script>
+
+ <script>
+    function previewImage(input, previewId) {
+      const preview = document.getElementById(previewId);
+      const file = input.files[0];
+      
+      if (file) {
+          const reader = new FileReader();
+          
+          reader.onload = function(e) {
+              preview.src = e.target.result;
+              preview.classList.remove('d-none');
+          }
+          
+          reader.readAsDataURL(file);
+      }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+  const vehiculeSelect = document.getElementById("vehicule");
+  const imagePreview = document.getElementById("vehicule-preview");
+
+  function updateImage() {
+    const selectedOption = vehiculeSelect.options[vehiculeSelect.selectedIndex];
+    const imageUrl = selectedOption.getAttribute("data-img");
+    if (imageUrl) {
+      imagePreview.src = imageUrl;
+    }
+  }
+
+  // Mise à jour initiale
+  updateImage();
+
+  // Mise à jour lors d’un changement
+  vehiculeSelect.addEventListener("change", updateImage);
+});
+
+
+</script>
+
+{% endblock %}

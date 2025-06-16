@@ -1,0 +1,114 @@
+{% extends 'Appli/base.html' %} 
+{% load static %}     
+{% block navbarfooter %} 
+
+
+
+
+        <!-- content begin -->
+        <div class="no-bottom no-top zebra" id="content">
+            <div id="top"></div>
+            
+            <!-- section begin -->
+            <section id="subheader" class="jarallax text-light">
+                <img src="{% static 'assets/images/background/2.jpg'%}" class="jarallax-img" alt="">
+                    <div class="center-y relative text-center">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+									<h1>Vehicule</h1>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+            </section>
+            <!-- section close -->
+
+            <section id="section-cars">
+                
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3">
+                           <div class="item_filter_group">
+                            <h4>Vehicle Type</h4>
+                            <form method="get" action="">
+                                <div class="de_form">
+                                    {% for type in types_vehicules %}
+                                    <div class="de_checkbox">
+                                        <input 
+                                            id="vehicle_type_{{ forloop.counter }}" 
+                                            name="types" 
+                                            type="checkbox" 
+                                            value="{{ type }}"
+                                            {% if type in selected_types %}checked{% endif %}
+                                        >
+                                        <label for="vehicle_type_{{ forloop.counter }}">{{ type }}</label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3">Filtrer</button>
+                            </form>
+                        </div>
+
+
+                        </div>
+
+                        <div class="col-lg-9">
+                            <div class="row">
+                            {% for voiture in vehicules %}
+                                <div class="col-lg-12">
+                                    <div class="de-item-list mb30">
+                                        <div class="d-img">
+                                            <img src="{{ voiture.image.url }}" class="img-fluid" alt="">
+                                        </div>
+                                        <div class="d-info">
+                                            <div class="d-text">
+                                                <h4>{{voiture.marque}} {{voiture.modele}}</h4>
+                                                <div class="d-atr-group">
+                                                   {% if voiture.caracteristiques %}
+                                                    <ul class="d-atr">
+                                                        <li><span>Sièges:</span>{{ voiture.caracteristiques.nombre_sieges }}</li>
+                                                        <li><span>Portes:</span>{{ voiture.caracteristiques.nombre_portes }}</li>
+                                                        <li><span>Carburant:</span>{{ voiture.caracteristiques.carburant }}</li>
+                                                        <li><span>Boîte:</span>{{ voiture.caracteristiques.transmission }}</li>
+                                                        <li><span>Vitesse maximum:</span>{{voiture.caracteristiques.vitesse_max}}KM/HEURE</li>
+                                                        <li><span>Climatisation:</span>{% if voiture.caracteristiques.climatisation %}Oui{% else %}Non{% endif %}</li>
+                                                        <li><span>Consommation:</span>{{voiture.caracteristiques.consommation}}L/100KM</li>
+                                                    </ul>
+                                                    {% endif %}
+
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-price">
+                                            Prix par jour <span>{{voiture.prix_par_jour}}</span>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            {%endfor%}
+                        </div>
+                    </div>
+                </div>
+                
+            </section>
+			
+			
+        </div>
+        <!-- content close -->
+
+        <a href="cars-list.html#" id="back-to-top"></a>
+       
+        
+    </div>
+
+    <!-- Javascript Files
+    ================================================== -->
+    <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="{% static 'assets/js/plugins.js'%}"></script>
+    <script src="{% static 'assets/js/designesia.js'%}"></script>
+
+    {% endblock %}

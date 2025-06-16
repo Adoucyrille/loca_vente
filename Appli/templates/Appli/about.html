@@ -1,0 +1,180 @@
+
+
+{% extends 'Appli/base.html' %} 
+{% load static %}     
+{% block navbarfooter %}
+       
+        <!-- content begin -->
+        <div class="no-bottom no-top zebra" id="content">
+            <div id="top"></div>
+            
+            <!-- section begin -->
+            <section id="subheader" class="jarallax text-light">
+                    {% for fond in fonds %}
+                    <img src="{{fond.imagefond.url}}" class="jarallax-img" alt=""> 
+                    {%endfor%}                    <div class="center-y relative text-center">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+									<h1>A propos de nous</h1>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+            </section>
+            <!-- section close -->
+
+            <section>
+                 {% for pub in publicite %}
+                <div class="container">
+                    <div class="row g-5">
+                        <div class="col-lg-6 wow fadeInRight">
+                            <h2>  <span>{{pub.titre}}</span>.</h2>
+                        </div>
+                        <div class="col-lg-6 wow fadeInRight" data-wow-delay=".25s">
+                        {{pub.description}}
+                        </div>
+                    </div>
+                    
+                </div>
+                {%endfor%}
+            </section>
+
+            <section aria-label="section" class="jarallax text-light">
+                <img src="{% static  'assets/images/background/8.jpg'%}" class="jarallax-img" alt="">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <h2>Conseil d'administration</h2>
+                            <div class="spacer-20"></div>
+                        </div>
+                        
+                    {%for direction in direct%} 
+                        <div class="col-lg-3 col-md-6 col-sm-6 mb30">
+                            <div class="f-profile text-center">
+                                <div class="fp-wrap f-invert">
+                                    <div class="fpw-overlay">
+                                        <div class="fpwo-wrap">
+                                            <div class="fpwow-icons">
+                                                <a href="about.html#"><i class="fa fa-facebook fa-lg"></i></a>
+                                                <a href="about.html#"><i class="fa fa-twitter fa-lg"></i></a>
+                                                <a href="about.html#"><i class="fa fa-linkedin fa-lg"></i></a>
+                                                <a href="about.html#"><i class="fa fa-pinterest fa-lg"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                                                      
+                                    <div class="fpw-overlay-btm"></div>
+                                    <img src="{{direction.photo.url}}" class="fp-image img-fluid" alt="">
+                                </div>
+
+                                <h4>{{direction.nom}} {{direction.prenom}}</h4>
+                                {{direction.fonction}}
+                            </div>
+                            
+                        </div>
+                        
+                        
+                    {%endfor%}    
+                </div>
+            </section>
+
+            <section aria-label="section">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 offset-lg-3 text-center">
+                            <h2>Caractéristiques</h2>
+                            <div class="spacer-20"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                         <div class="col-lg-3">
+                            {% for choie in choi %}
+                            <div class="box-icon s2 p-small mb20 wow fadeInRight" data-wow-delay=".65s">
+                                <i class="fa bg-color fa-trophy"></i>
+                                <div class="d-inner">
+                                    <h4>{{choie.titre}}</h4>
+                                    {{choie.description}}.
+                                </div>
+                            </div>
+                            {%endfor%}
+                           
+                        </div>
+
+                        <div class="col-lg-6">
+                            <img src="{% static  'assets/images/misc/car.png' %}" alt="" class="img-fluid wow fadeInUp">
+                        </div>
+
+                        <div class="col-lg-3">
+                            {% for cho in choi2 %}
+                            <div class="box-icon s2 d-invert p-small mb20 wow fadeInL fadeInLeft" data-wow-delay="1s">
+                                <i class="fa bg-color fa-tag"></i>
+                                <div class="d-inner">
+                                    <h4>{{cho.titre}}</h4>
+                                     {{cho.description}}
+                                </div>
+                            </div>
+                            {%endfor%}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-img-with-tab">
+                
+                    </div>
+                </div>
+
+                <div class="image-container col-md-6 pull-right" data-bgimage="url({% static  'assets/images/background/5.jpg'%}) center"></div>
+            </section>
+
+             <section id="section-call-to-action" class="bg-color-2 pt60 pb60 text-light">
+                <div class="container">
+                    <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-4 offset-lg-2">
+                             <span class="subtitle text-white">Appelez-nous pour plus d'informations</span>
+                            <h2 class="s2">Le service client de ADOU AUTO est là pour vous aider à tout moment.</h2>
+                        </div>
+
+                        <div class="col-lg-4 text-lg-center text-sm-center">
+                            <div class="phone-num-big">
+                                <i class="fa fa-phone"></i>
+                                <span class="pnb-text">
+                                   Appelez-nous maintenant
+                                </span>
+                                {% for base in bases %}
+                                <span class="pnb-num">
+                                    {{base.numero}}
+                                </span>
+                                {%endfor%}
+                            </div>
+                            <a href="{% url 'contact' %}" class="btn-main">Contactez nous</a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </section>
+			
+        </div>
+        <!-- content close -->
+
+        <a href="about.html#" id="back-to-top"></a>
+        
+       
+        
+    </div>
+
+<div id="selector">
+        <div id="demo-rtl" class="sc-opt">
+            <div class="sc-icon">RTL</div><span class="sc-val">Click to Enable</span>
+        </div>
+    </div>
+   
+    <!-- Javascript Files
+    ================================================== -->
+    <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="{% static 'assets/js/plugins.js'%}"></script>
+    <script src="{% static 'assets/js/designesia.js'%}"></script>
+
+    {% endblock %}

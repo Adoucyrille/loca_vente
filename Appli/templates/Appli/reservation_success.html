@@ -1,0 +1,16 @@
+{% extends 'Appli/base.html' %} 
+{% load static %}     
+{% block navbarfooter %} 
+
+    <div class="container mt-5 text-center">
+        <h1 class="text-success">Réservation Réussie !</h1>
+        <p>Votre demande de réservation a été envoyée avec succès.</p>
+        <p>Nous vous contacterons bientôt pour confirmer les détails.</p>
+        <a href="{% url 'reservation_pdf' pk=reservation.pk %}" target="_blank" class="btn btn-sm btn-outline-primary">
+            Télécharger ma réservation en PDF
+        </a>
+        <a href="{% url 'accueil' %}" class="btn btn-primary mt-3">Retour à l'accueil</a>
+
+    </div>
+    
+{% endblock %}

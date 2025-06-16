@@ -1,0 +1,395 @@
+{% load static %}     
+<!DOCTYPE html>
+<html lang="Fr">
+
+<head>
+    <title>ADOU AUTO</title>
+    <link rel="icon" href="{% static 'assets/images/icon.png' %}" type="image/gif" sizes="16x16">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Rentaly - Multipurpose Vehicle Car Rental Website Template" name="description">
+    <meta content="" name="keywords">
+    <meta content="" name="author">
+    <!-- CSS Files
+    ================================================== -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" id="bootstrap">
+    <link href="{% static 'assets/css/mdb.min.css' %}" rel="stylesheet" type="text/css" id="mdb">
+    <link href="{% static 'assets/css/plugins.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/coloring.css' %}" rel="stylesheet" type="text/css">
+    <!-- color scheme -->
+    <link id="colors" href="{% static 'assets/css/colors/scheme-01.css' %}" rel="stylesheet" type="text/css">
+</head>
+
+<body onload="initialize()">
+    <div id="wrapper">
+        <!-- page de prechargement commence -->
+        <div id="de-preloader"></div>
+        <!-- page de prechargement  se termine -->
+        
+       
+
+        <!-- header commence -->
+        <header class="transparent scroll-light has-topbar">
+            {% for base in bases %}
+            <div id="topbar" class="topbar-dark text-light">
+                <div class="container">
+                    
+                    <div class="topbar-left xs-hide">
+                        <div class="topbar-widget">
+                            <div class="topbar-widget"><a href="index.html#"><i class="fa fa-phone"></i>{{base.numero}}</a></div>
+                            <div class="topbar-widget"><a href="index.html#"><i class="fa fa-envelope"></i><span class="__cf_email__" data-cfemail="d8bbb7b6acb9bbac98aabdb6acb9b4a1f6bbb7b5">[{{base.email}}]</span></a></div>
+                            <div class="topbar-widget"><a href="index.html#"><i class="fa fa-clock-o">Disponible en presentiel</i>{{base.jour_ouverture}} - {{base.jour_fermeture}} {{base.heure_ouverture}} - {{base.heure_fermeture}}</a></div>
+                        </div>
+                    </div>
+                
+                    <div class="topbar-right">
+                        <div class="social-icons">
+                            <a href="index.html#"><i class="fa fa-facebook fa-lg"></i></a>
+                            <a href="index.html#"><i class="fa fa-twitter fa-lg"></i></a>
+                            <a href="index.html#"><i class="fa fa-youtube fa-lg"></i></a>
+                            <a href="index.html#"><i class="fa fa-pinterest fa-lg"></i></a>
+                            <a href="index.html#"><i class="fa fa-instagram fa-lg"></i></a>
+                        </div>
+                    </div>  
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="de-flex sm-pt10">
+                            <div class="de-flex-col">
+                                <div class="de-flex-col">
+                                    <!-- logo begin -->
+                                    <div id="logo">
+                                        <a href="index.html">
+                                            <img class="logo-1" src="{{base.imagelogo.url}}" alt="">
+                                            <img class="logo-2" src="{{base.imagelogo.url}}" alt="">
+                                        </a>
+                                    </div>
+                                    <!-- logo close -->
+                                </div>
+                            </div>
+                            <div class="de-flex-col header-col-mid">
+                                <ul id="mainmenu">
+                                    <li><a class="menu-item" href="">ACCUEIL</a>
+                                        
+                                    </li>
+                                    <li><a class="menu-item" href="">VEHICULE</a>
+                                        <ul>
+                                            <li><a class="menu-item" href="">LISTE DE VEHICULE</a></li>
+                                            <li><a class="menu-item" href="">Cars List 1 Dark</a></li>
+                                            <li><a class="menu-item" href="">Cars List 2</a></li>
+                                            <li><a class="menu-item" href="">Cars List 2 Dark</a></li>
+                                            <li><a class="menu-item" href="">Cars Single</a></li>
+                                            <li><a class="menu-item" href="">Cars Single Dark</a></li>
+                                        </ul>
+                                    </li>
+                                  
+                                    
+                                    <li><a class="menu-item" href="">Pages</a>
+                                        <ul>
+                                            <li><a class="menu-item" href="">Contact</a></li>
+                                            <li><a class="menu-item" href="">Login</a></li>
+                                            <li><a class="menu-item" href="">Register</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="menu-item" href="">A PROPOS</a>
+                                        <ul>
+                                            <li><a class="menu-item" href="">A PROPOS DE NOUS</a></li>
+                                        </ul>
+                                    </li>
+                                    
+                            </div>
+                            <div class="de-flex-col">
+                                <div class="menu_side_area">
+                                    <a href="{% url 'connexion' %}" class="btn-main">Se connecter</a>
+                                    <span id="menu-btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>aucune données</p>
+            </div>
+            {%endfor%}
+        </header>
+        <!-- header close -->
+
+<div class="no-bottom no-top" id="content">
+    <div id="top"></div>
+    <section id="section-hero" aria-label="section" class="jarallax">
+         {% for fond in fonds %}
+        <img src="{{fond.imagefond.url}}" class="jarallax-img" alt=""> 
+        {%endfor%}
+
+
+              <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-12 text-light">
+                            <div class="spacer-double"></div>
+                            <div class="spacer-double"></div>
+                            <h1 class="mb-2">Vous recherchez un <span class="id-color">véhicule</span>? Vous êtes au bon endroit.</h1>
+                            <div class="spacer-single"></div>
+                        </div>
+                       <div class="spacer-double"></div>
+                    <div class="row text-light">
+                    
+                            <div class="col-12">
+                                <div class="container-timeline">
+                         <ul>
+                            {% for parti in parti1accueil %}
+                                <li>
+                                    <h4> {{ parti.titre }}</h4>
+                                    <p>{{ parti.description }}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+            </section>
+            <section aria-label="section" class="pt40 pb40 text-light" data-bgcolor="#111111">
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <p style="color: {% if message.tags == 'success' %}green{% else %}red{% endif %};">
+                        {{ message }}
+                        </p>
+                    {% endfor %}
+                    {% endif %}
+                <div class="wow fadeInRight d-flex">
+                  <div class="de-marquee-list">
+                   
+                    <div class="d-item">
+                        {% for defil in defiles %} 
+                      <span class="d-item-txt">{{defil.titre}}</span>
+                      <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                      </span>
+                    {%empty%}
+                     </div>
+                   {%endfor%}
+                  </div>
+                </div>
+            </section>
+
+            <section aria-label="section">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 offset-lg-3 text-center">
+                            <span class="subtitle">Pourquoi nous choisir</h2></span>
+                            <h2>Nos fonctionnalités</h2>
+                            <p>Découvrez un monde de commodité, de sécurité et de personnalisation, ouvrant la voie à des aventures inoubliables et à des solutions de mobilité fluides.</p>
+                            <div class="spacer-20"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-lg-3">
+                            {% for choie in choi %}
+                            <div class="box-icon s2 p-small mb20 wow fadeInRight" data-wow-delay=".65s">
+                                <i class="fa bg-color fa-trophy"></i>
+                                <div class="d-inner">
+                                    <h4>{{choie.titre}}</h4>
+                                    {{choie.description}}.
+                                </div>
+                            </div>
+                            {%endfor%}
+                           
+                        </div>
+
+                        <div class="col-lg-6">
+                            <img src="{% static  'assets/images/misc/car.png' %}" alt="" class="img-fluid wow fadeInUp">
+                        </div>
+
+                        <div class="col-lg-3">
+                            {% for cho in choi2 %}
+                            <div class="box-icon s2 d-invert p-small mb20 wow fadeInL fadeInLeft" data-wow-delay="1s">
+                                <i class="fa bg-color fa-tag"></i>
+                                <div class="d-inner">
+                                    <h4>{{cho.titre}}</h4>
+                                     {{cho.description}}
+                                </div>
+                            </div>
+                            {%endfor%}
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+           
+
+            <section id="section-cars">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 offset-lg-3 text-center">
+                            <span class="subtitle">Profitez de votre balade</h2></span>
+                            <h2>Notre flotte de véhicules</h2>
+                            <p>Réalisez vos rêves avec une flotte exquise de véhicules polyvalents pour des voyages inoubliables.</p>
+                            <div class="spacer-20"></div>
+                        </div>
+                       <div id="items-carousel" class="owl-carousel wow fadeIn">
+                {% for voiture in vehicules %}
+                <div class="col-lg-12">
+                    <div class="de-item mb30">
+                        <div class="d-img">
+                            <img src="{{ voiture.image.url }}" class="img-fluid" alt="">
+                        </div>
+                        <div class="d-info">
+                            <div class="d-text">
+                                <h4>{{ voiture.marque }} {{ voiture.modele }}</h4>
+                                <div class="d-item_like">
+                                    <i class="fa fa-heart"></i><span>0</span>
+                                </div>
+                                <div class="d-atr-group">
+                                    <span class="d-atr"><img src="{% static 'assets/images/icons/1-green.svg' %}" alt="">{{ voiture.type_vehicule }}</span>
+                                    <span class="d-atr"><img src="{% static 'assets/images/icons/2-green.svg' %}" alt="">Disponible:{{ voiture.disponible|yesno:"Oui,Non" }}</span>
+                                    <span class="d-atr"><img src="{% static 'assets/images/icons/3-green.svg' %}" alt="">{{ voiture.immatriculation }}</span>
+                                    
+                                </div>
+                                <div class="d-price">
+                                    Prix par jour: <span>{{ voiture.prix_par_jour }} FCFA</span>
+                                    <a class="btn-main" href="car-single.html">Rent Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    {% empty %}
+                <p>Aucune voiture disponible.</p>
+            {% endfor %}
+        </div>
+
+                            
+                    </div>
+                </div>
+            </section>
+             <section id="section-news">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 offset-lg-3 text-center">
+                            <span class="subtitle">Dernières nouveautés de notre part</h2></span>
+                            <h2>Actualités &amp; Promo</h2>
+                            <p>Dernières nouvelles, nouvelles perspectives et couverture approfondie - restez en tête avec nos dernières nouvelles, informations et analyses.</p>
+                            <div class="spacer-20"></div>
+                        </div>
+                        {% for actu in actua %}       
+                        <div class="col-lg-4 mb10">
+                             
+                            <div class="bloglist s2 item">
+                                <div class="post-content">
+                                    <div class="post-image">
+                                        <div class="date-box">
+                                            <div class="m">{{actu.jour}}</div>
+                                            <div class="d">{{actu.mois}}</div>
+                                        </div>
+                                        <img alt="" src="{{actu.imageactu.url}}" class="lazy">
+                                    </div>
+                                    <div class="post-text">                            
+                                        <h4><a href="news-single.html">{{actu.titre}}<span></span></a></h4>
+                                        <p>{{actu.description}}</p>
+                                        <button type="button" class="btn-main" data-bs-toggle="modal" data-bs-target="#modal-{{actu.id}}">
+                                        Lire plus
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {%endfor%}
+                    </div>
+                </div>
+                {% for actu in actua %}  
+                <div class="modal fade" id="modal-{{actu.id}}" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle">{{actu.titre}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="fermer"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{actu.modal}}.</p>
+                        <!-- Tu peux ajouter plus de contenu ici -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"style="background-color: green;" data-bs-dismiss="modal">fermer</button>
+                    </div>
+                    </div>
+                </div>
+                </div>
+                {%endfor%}
+
+            </section>
+
+            
+        </div>
+        <!-- content close -->
+        <a href="index.html#" id="back-to-top"></a>
+        <!-- footer begin -->
+
+           <footer class="text-light">
+            {% for base in bases %}
+            <div class="container">
+                <div class="row g-custom-x">
+                    <div class="col-lg-3">
+                        <div class="widget">
+                            <h5 style="text-transform: uppercase;">à propos de ADOU aUTO</h5>
+                            <p>{{base.about}}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-3">
+                        <div class="widget">
+                            <h5>Contact Info</h5>
+                            <address class="s1">
+                                <span><i class="id-color fa fa-map-marker fa-lg"></i>{{base.localisation}}</span>
+                                <span><i class="id-color fa fa-phone fa-lg"></i>{{base.numero}}</span>
+                                <span><i class="id-color fa fa-envelope-o fa-lg"></i><a href="https://www.madebydesignesia.com/cdn-cgi/l/email-protection#187b77766c797b6c587d60797568747d367b7775"><span class="__cf_email__" data-cfemail="4b2824253f2a283f0b2e332a263b272e65282426">[{{base.email}}]</span></a></span
+                            </address>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <h5>Quick Links</h5>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="widget">
+                                    <ul>
+                                        <li><a href="index.html#">About</a></li>
+                                        <li><a href="index.html#">Blog</a></li>
+                                        <li><a href="index.html#">Careers</a></li>
+                                        <li><a href="index.html#">News</a></li>
+                                        <li><a href="index.html#">Partners</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="widget">
+                            <h5>Social Network</h5>
+                            <div class="social-icons">
+                                <a href="index.html#"><i class="fa fa-facebook fa-lg"></i></a>
+                                <a href="index.html#"><i class="fa fa-twitter fa-lg"></i></a>
+                                <a href="index.html#"><i class="fa fa-linkedin fa-lg"></i></a>
+                                <a href="index.html#"><i class="fa fa-pinterest fa-lg"></i></a>
+                                <a href="index.html#"><i class="fa fa-rss fa-lg"></i></a>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+           
+             {% endfor %}
+        </footer>
+       
+    </div>
+
+    
+    <!-- Javascript Files
+    ================================================== -->
+    <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="{% static 'assets/js/plugins.js' %}"></script>
+    <script src="{% static 'assets/js/designesia.js' %}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgiM7ogCAA2Y5pgSk2KXZfxF5S_1jsptA&amp;libraries=places&amp;callback=initPlaces" async="" defer=""></script>
+
