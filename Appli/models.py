@@ -225,7 +225,7 @@ class CaracteristiqueTechnique(models.Model):
     nombre_sieges = models.PositiveSmallIntegerField(default=5)
     nombre_portes = models.PositiveSmallIntegerField(default=5)
     vitesse_max = models.PositiveSmallIntegerField(help_text="en km/h")
-    climatisation = models.BooleanField()
+    climatisation = models.BooleanField(null=True, blank=True)
     transmission = models.CharField(
         max_length=10,
         choices=[
