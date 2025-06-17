@@ -23,6 +23,16 @@
         <img src="{{fond.imagefond.url}}" class="jarallax-img" alt=""> 
         {%endfor%}
 
+            {% if messages %}
+            <div id="message-container">
+                 {% for message in messages %}
+                <p class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" style="font-size: 55px;">
+                    {{ message }}
+                </p>
+                 {% endfor %}
+                </div>
+             {% endif %}
+
 
               <div class="container">
                     <div class="row align-items-center">
@@ -323,6 +333,20 @@
         <!-- footer begin -->
        
     </div>
+    <script>
+         document.addEventListener("DOMContentLoaded", function () {
+             const messageContainer = document.getElementById("message-container");
+                if (messageContainer) {
+                    setTimeout(() => {
+                        messageContainer.style.transition = "opacity 0.5s ease";
+                        messageContainer.style.opacity = "0";
+                            setTimeout(() => {
+                                messageContainer.remove();
+                            }, 500);
+                        }, 4000); // 4 secondes d'affichage
+                     }
+                 });
+    </script>
     
     <!-- Javascript Files
     ================================================== -->

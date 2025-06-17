@@ -34,12 +34,13 @@
             {% for base in bases %}
             <div id="topbar" class="topbar-dark text-light">
                 <div class="container">
+                    <p style="font-size: 25PX;" color="green">Veuillez vous connecter en cliquant sur le bouton se contecter pour plus de fonctionnalités. Merci! </p>
                     
                     <div class="topbar-left xs-hide">
                         <div class="topbar-widget">
-                            <div class="topbar-widget"><a href="index.html#"><i class="fa fa-phone"></i>{{base.numero}}</a></div>
-                            <div class="topbar-widget"><a href="index.html#"><i class="fa fa-envelope"></i><span class="__cf_email__" data-cfemail="d8bbb7b6acb9bbac98aabdb6acb9b4a1f6bbb7b5">[{{base.email}}]</span></a></div>
-                            <div class="topbar-widget"><a href="index.html#"><i class="fa fa-clock-o">Disponible en presentiel</i>{{base.jour_ouverture}} - {{base.jour_fermeture}} {{base.heure_ouverture}} - {{base.heure_fermeture}}</a></div>
+                            <div class="topbar-widget"><i class="fa fa-phone"></i>{{base.numero}}</div>
+                            <div class="topbar-widget"><i class="fa fa-envelope"></i><span class="__cf_email__" data-cfemail="d8bbb7b6acb9bbac98aabdb6acb9b4a1f6bbb7b5">[{{base.email}}]</span></div>
+                            <div class="topbar-widget"><i class="fa fa-clock-o">Disponible en presentiel</i>{{base.jour_ouverture}} - {{base.jour_fermeture}} {{base.heure_ouverture}} - {{base.heure_fermeture}}</div>
                         </div>
                     </div>
                 
@@ -63,41 +64,35 @@
                                 <div class="de-flex-col">
                                     <!-- logo begin -->
                                     <div id="logo">
-                                        <a href="index.html">
+                                        
                                             <img class="logo-1" src="{{base.imagelogo.url}}" alt="">
                                             <img class="logo-2" src="{{base.imagelogo.url}}" alt="">
-                                        </a>
+                                        
                                     </div>
                                     <!-- logo close -->
                                 </div>
                             </div>
                             <div class="de-flex-col header-col-mid">
                                 <ul id="mainmenu">
-                                    <li><a class="menu-item" href="">ACCUEIL</a>
+                                    <li><a class="menu-item" href="#section-hero">ACCUEIL</a>
                                         
                                     </li>
-                                    <li><a class="menu-item" href="">VEHICULE</a>
+                                    <li><a class="menu-item" href="#section-cars">VEHICULE</a>
                                         <ul>
-                                            <li><a class="menu-item" href="">LISTE DE VEHICULE</a></li>
-                                            <li><a class="menu-item" href="">Cars List 1 Dark</a></li>
-                                            <li><a class="menu-item" href="">Cars List 2</a></li>
-                                            <li><a class="menu-item" href="">Cars List 2 Dark</a></li>
-                                            <li><a class="menu-item" href="">Cars Single</a></li>
-                                            <li><a class="menu-item" href="">Cars Single Dark</a></li>
+                                            <li><a class="menu-item" href="#section-cars">LISTE DE VEHICULE</a></li>
+                                            
                                         </ul>
                                     </li>
                                   
                                     
                                     <li><a class="menu-item" href="">Pages</a>
                                         <ul>
-                                            <li><a class="menu-item" href="">Contact</a></li>
-                                            <li><a class="menu-item" href="">Login</a></li>
-                                            <li><a class="menu-item" href="">Register</a></li>
+                                            <li><a class="menu-item" href="{% url 'inscrire' %}">S'inscrire</a></li>
                                         </ul>
                                     </li>
-                                    <li><a class="menu-item" href="">A PROPOS</a>
+                                    <li><a class="menu-item" href="#propos">A PROPOS</a>
                                         <ul>
-                                            <li><a class="menu-item" href="">A PROPOS DE NOUS</a></li>
+                                            <li><a class="menu-item" href="#propos">A PROPOS DE NOUS</a></li>
                                         </ul>
                                     </li>
                                     
@@ -175,7 +170,7 @@
                 </div>
             </section>
 
-            <section aria-label="section">
+            <section  aria-label="section" id="propos">
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-6 offset-lg-3 text-center">
@@ -343,7 +338,7 @@
                             <address class="s1">
                                 <span><i class="id-color fa fa-map-marker fa-lg"></i>{{base.localisation}}</span>
                                 <span><i class="id-color fa fa-phone fa-lg"></i>{{base.numero}}</span>
-                                <span><i class="id-color fa fa-envelope-o fa-lg"></i><a href="https://www.madebydesignesia.com/cdn-cgi/l/email-protection#187b77766c797b6c587d60797568747d367b7775"><span class="__cf_email__" data-cfemail="4b2824253f2a283f0b2e332a263b272e65282426">[{{base.email}}]</span></a></span
+                                <span><i class="id-color fa fa-envelope-o fa-lg"></i><span class="__cf_email__" data-cfemail="4b2824253f2a283f0b2e332a263b272e65282426">[{{base.email}}]</span></span
                             </address>
                         </div>
                     </div>
@@ -354,10 +349,10 @@
                             <div class="col-lg-6">
                                 <div class="widget">
                                     <ul>
-                                        <li><a href="">A propos</a></li>
-                                        <li><a href="">Reservation</a></li>
-                                        <li><a href="">Accueil</a></li>
-                                        <li><a href="">Vehicules</a></li>
+                                        <li><a href="#propos">A propos</a></li>
+                                        <li><a href="#section-news">New</a></li>
+                                        <li><a href="#section-hero">Accueil</a></li>
+                                        <li><a href="#section-cars">Vehicules</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -372,7 +367,6 @@
                                 <a href="index.html#"><i class="fa fa-twitter fa-lg"></i></a>
                                 <a href="index.html#"><i class="fa fa-linkedin fa-lg"></i></a>
                                 <a href="index.html#"><i class="fa fa-pinterest fa-lg"></i></a>
-                                <a href="index.html#"><i class="fa fa-rss fa-lg"></i></a>
                             </div>
                         </div>    
                     </div>

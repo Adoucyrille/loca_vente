@@ -1,8 +1,102 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="Fr">
 
+<head>
+    <title>ADOU AUTO</title>
+    <link rel="icon" href="{% static 'assets/images/icon.png' %}" type="image/gif" sizes="16x16">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Rentaly - Multipurpose Vehicle Car Rental Website Template" name="description">
+    <meta content="" name="keywords">
+    <meta content="" name="author">
+    <!-- CSS Files
+    ================================================== -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" id="bootstrap">
+    <link href="{% static 'assets/css/mdb.min.css' %}" rel="stylesheet" type="text/css" id="mdb">
+    <link href="{% static 'assets/css/plugins.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/coloring.css' %}" rel="stylesheet" type="text/css">
+    <!-- color scheme -->
+    <link id="colors" href="{% static 'assets/css/colors/scheme-01.css' %}" rel="stylesheet" type="text/css">
+</head>
 
-{% extends 'Appli/base.html' %} 
-{% load static %}     
-{% block navbarfooter %}
+<body onload="initialize()">
+    <div id="wrapper">
+        <!-- page de prechargement commence -->
+        <div id="de-preloader"></div>
+        <!-- page de prechargement  se termine -->
+        
+       
+
+        <!-- header commence -->
+        <header class="transparent scroll-light has-topbar">
+            <div id="topbar" class="topbar-dark text-light">
+                <div class="container">
+                    <div class="topbar-left xs-hide">
+                        <div class="topbar-widget">
+                            <div class="topbar-widget"><i class="fa fa-phone"></i>+225 0703123456</div>
+                            <div class="topbar-widget"><i class="fa fa-envelope"></i><span class="__cf_email__" data-cfemail="d8bbb7b6acb9bbac98aabdb6acb9b4a1f6bbb7b5">[adouauto@gmail.com]</span></div>
+                            <div class="topbar-widget"><i class="fa fa-clock-o">Disponible en presentiel</i>Lun - Ven 08.00 - 18.00</div>
+                        </div>
+                    </div>
+                
+                    <div class="topbar-right">
+                        <div class="social-icons">
+                            <a href="index.html#"><i class="fa fa-facebook fa-lg"></i></a>
+                            <a href="index.html#"><i class="fa fa-twitter fa-lg"></i></a>
+                            <a href="index.html#"><i class="fa fa-youtube fa-lg"></i></a>
+                            <a href="index.html#"><i class="fa fa-pinterest fa-lg"></i></a>
+                            <a href="index.html#"><i class="fa fa-instagram fa-lg"></i></a>
+                        </div>
+                    </div>  
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="de-flex sm-pt10">
+                            <div class="de-flex-col">
+                                <div class="de-flex-col">
+                                    <!-- logo begin -->
+                                    <div id="logo">
+                                        
+                                            <img class="logo-1" src="{% static 'assets/images/logo-light4.PNG' %}" alt="">
+                                            <img class="logo-2" src="{% static 'assets/images/logo-light4.PNG' %}" alt="">
+                                
+                                    </div>
+                                    <!-- logo close -->
+                                </div>
+                            </div>
+                            <div class="de-flex-col header-col-mid">
+                                <ul id="mainmenu">
+                                    <li><a class="menu-item" href="">ACCUEIL</a>
+                                        
+                                    </li>
+                                    <li><a class="menu-item" href="">VEHICULE</a>
+                                        <ul>
+                                            <li><a class="menu-item" href="">LISTE DE VEHICULE</a></li>
+                                    
+                                    <li><a class="menu-item" href="">Pages</a>
+                                        <ul>
+                                            <li><a class="menu-item" href="">Contact</a></li>
+                                            <li><a class="menu-item" href="">Se connecter</a></li>
+                                            <li><a class="menu-item" href="">S'INSCRIRE</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="menu-item" href="">A PROPOS</a>
+                                        
+                                    </li>
+                                    
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>    
+
         <!-- content begin -->
         <div class="no-bottom no-top" id="content">
             <div id="top"></div>
@@ -31,14 +125,16 @@
 							<h3>Vous n'avez pas de compte ? Inscrivez-vous maintenant.</h3>
                             <p> Bienvenue chez ADOU AUTO. Nous sommes ravis de vous avoir à bord. En créant un compte chez nous, vous aurez accès à une gamme d'avantages et de fonctionnalités pratiques qui amélioreront votre expérience de location de voiture</p>
 							
-							<div class="spacer-10"></div>
-                            {% if messages %}
-                            {% for message in messages %}
-                                <p style="color: {% if message.tags == 'success' %}green{% else %}red{% endif %};">
-                                {{ message }}
-                                </p>
-                            {% endfor %}
-                            {% endif %}
+							{% if messages %}
+                            <div id="message-container">
+                                {% for message in messages %}
+                                    <p class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+                                        {{ message }}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                          {% endif %}
+
                             
 							
 							<form name="contactForm" id='contact_form' class="form-border" method="post" action="{% url 'inscrire' %} ">
@@ -157,11 +253,79 @@
 						</div>
                     </div>
 				</div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const messageContainer = document.getElementById("message-container");
+                        if (messageContainer) {
+                            setTimeout(() => {
+                                messageContainer.style.transition = "opacity 0.5s ease";
+                                messageContainer.style.opacity = "0";
+                                setTimeout(() => {
+                                    messageContainer.remove();
+                                }, 500);
+                            }, 4000); // 4 secondes d'affichage
+                        }
+                    });
+                </script>
+
             </section>
 			
 			
         </div>
         <!-- content close -->
+           <footer class="text-light">
+            <div class="container">
+                <div class="row g-custom-x">
+                    <div class="col-lg-3">
+                        <div class="widget">
+                            <h5>A propos de ADOU AUTO</h5>
+                            <p>Là où la qualité rencontre l'abordabilité. Nous comprenons l’importance d’un voyage fluide et agréable sans le fardeau de coûts excessifs. C'est pourquoi nous avons méticuleusement élaboré nos offres pour vous fournir des véhicules haut de gamme à un coût minimum.</p>                        </div>
+                    </div>
+                    
+                    <div class="col-lg-3">
+                        <div class="widget">
+                            <h5>Contact Info</h5>
+                            <address class="s1">
+                                <span><i class="id-color fa fa-map-marker fa-lg"></i>Abidjan, Yopougon</span>
+                                <span><i class="id-color fa fa-phone fa-lg"></i>0759225434</span>
+                                <span><i class="id-color fa fa-envelope-o fa-lg"></i><a href="https://www.madebydesignesia.com/cdn-cgi/l/email-protection#187b77766c797b6c587d60797568747d367b7775"><span class="__cf_email__" data-cfemail="4b2824253f2a283f0b2e332a263b272e65282426">[adouauto@gmail.com]</span></a></span>
+                            </address>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="widget">
+                            <h5>Reseaux sociaux</h5>
+                            <div class="social-icons">
+                                <a href="index.html#"><i class="fa fa-facebook fa-lg"></i></a>
+                                <a href="index.html#"><i class="fa fa-twitter fa-lg"></i></a>
+                                <a href="index.html#"><i class="fa fa-linkedin fa-lg"></i></a>
+                                <a href="index.html#"><i class="fa fa-pinterest fa-lg"></i></a>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+            <div class="subfooter">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="de-flex">
+                                <div class="de-flex-col">
+                                    
+                                        Copyright 2025 - Location par ADOU AUTO
+                                
+                                </div>
+                                <ul class="menu-simple">
+                                    <li>Termes &amp; Conditions</li>
+                                    <li>Politique de confidentialité</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
 
         <a href="register.html#" id="back-to-top"></a>
         
@@ -173,5 +337,4 @@
     ================================================== -->
     <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="{% static 'assets/js/plugins.js'%}"></script>
     <script src="{% static 'assets/js/designesia.js'%}"></script>
-
-    {% endblock %}
+    

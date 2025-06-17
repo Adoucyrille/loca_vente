@@ -37,9 +37,9 @@
                     
                     <div class="topbar-left xs-hide">
                         <div class="topbar-widget">
-                            <div class="topbar-widget"><a href="index.html#"><i class="fa fa-phone"></i>{{base.numero}}</a></div>
-                            <div class="topbar-widget"><a href="index.html#"><i class="fa fa-envelope"></i><span class="__cf_email__" data-cfemail="d8bbb7b6acb9bbac98aabdb6acb9b4a1f6bbb7b5">[{{base.email}}]</span></a></div>
-                            <div class="topbar-widget"><a href="index.html#"><i class="fa fa-clock-o">Disponible en presentiel</i>{{base.jour_ouverture}} - {{base.jour_fermeture}} {{base.heure_ouverture}} - {{base.heure_fermeture}}</a></div>
+                            <div class="topbar-widget"><i class="fa fa-phone"></i>{{base.numero}}</div>
+                            <div class="topbar-widget"><i class="fa fa-envelope"></i><span class="__cf_email__" data-cfemail="d8bbb7b6acb9bbac98aabdb6acb9b4a1f6bbb7b5">[{{base.email}}]</span></div>
+                            <div class="topbar-widget"><i class="fa fa-clock-o">Disponible en presentiel</i>{{base.jour_ouverture}} - {{base.jour_fermeture}} {{base.heure_ouverture}} - {{base.heure_fermeture}}</div>
                         </div>
                     </div>
                 
@@ -63,10 +63,10 @@
                                 <div class="de-flex-col">
                                     <!-- logo begin -->
                                     <div id="logo">
-                                        <a href="index.html">
+                                        
                                             <img class="logo-1" src="{{base.imagelogo.url}}" alt="">
                                             <img class="logo-2" src="{{base.imagelogo.url}}" alt="">
-                                        </a>
+                                        
                                     </div>
                                     <!-- logo close -->
                                 </div>
@@ -87,12 +87,9 @@
                                     </li>
                                     <li><a class="menu-item" href="{% url 'commandes' %}">Mes Réservations</a>
                                     </li>
-                                    <li><a class="menu-item" href="index.html#">Pages</a>
-                                        <ul>
-                                            <li><a class="menu-item" href="{% url 'contact' %}">Contact</a></li>
-                                            <li><a class="menu-item" href="{% url 'connexion' %}l">Se connecter</a></li>
-                                            <li><a class="menu-item" href="{% url 'inscrire' %}">S'inscrire</a></li>
-                                        </ul>
+                                    <li>
+                                        <a class="menu-item" href="{% url 'contact' %}">Contact</a>
+                                        
                                     </li>
                                     <li><a class="menu-item" href="{% url 'propos' %}">A PROPOS DE NOUS</a>
                                         
@@ -134,7 +131,7 @@
                             <address class="s1">
                                 <span><i class="id-color fa fa-map-marker fa-lg"></i>{{base.localisation}}</span>
                                 <span><i class="id-color fa fa-phone fa-lg"></i>{{base.numero}}</span>
-                                <span><i class="id-color fa fa-envelope-o fa-lg"></i><a href="https://www.madebydesignesia.com/cdn-cgi/l/email-protection#187b77766c797b6c587d60797568747d367b7775"><span class="__cf_email__" data-cfemail="4b2824253f2a283f0b2e332a263b272e65282426">[{{base.email}}]</span></a></span
+                                <span><i class="id-color fa fa-envelope-o fa-lg"></i>[{{base.email}}]</span></span
                             </address>
                         </div>
                     </div>
@@ -163,7 +160,6 @@
                                 <a href="index.html#"><i class="fa fa-twitter fa-lg"></i></a>
                                 <a href="index.html#"><i class="fa fa-linkedin fa-lg"></i></a>
                                 <a href="index.html#"><i class="fa fa-pinterest fa-lg"></i></a>
-                                <a href="index.html#"><i class="fa fa-rss fa-lg"></i></a>
                             </div>
                         </div>    
                     </div>

@@ -73,6 +73,7 @@
                                                         <li><span>Carburant:</span>{{ voiture.caracteristiques.carburant }}</li>
                                                         <li><span>Boîte:</span>{{ voiture.caracteristiques.transmission }}</li>
                                                         <li><span>Vitesse maximum:</span>{{voiture.caracteristiques.vitesse_max}}KM/HEURE</li>
+                                                        <li><span>Climatisation:</span>{% if voiture.caracteristiques.climatisation %}Oui{% else %}Non{% endif %}</li>
                                                         <li><span>Consommation:</span>{{voiture.caracteristiques.consommation}}L/100KM</li>
                                                     </ul>
                                                     {% endif %}

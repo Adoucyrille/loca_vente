@@ -172,6 +172,8 @@ def connexion(request):
     return render(request, './Appli/connexion.html')  # Formulaire de connexion
 
 def inscrire(request):
+
+    
     error = None
     field_errors = {}
     
@@ -330,13 +332,12 @@ def reser(request):
             )
 
             messages.success(request, "Votre réservation est enregistrée et en attente de validation.")
-            return redirect('Appli:reservation_success')
+            return redirect('Appli:reser')
 
         except ValidationError as e:
             messages.error(request, str(e))
         except Exception as e:
             print("Erreur serveur:", e)
-            messages.error(request, "Une erreur inattendue est survenue. Veuillez réessayer.")
 
     context = {
         'bases': bases,
