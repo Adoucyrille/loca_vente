@@ -1,258 +1,298 @@
- 
 {% extends 'Appli/base.html' %} 
 {% load static %}     
 {% block navbarfooter %}
-        <!-- content begin -->
+<style>
+    #vehicule-preview {
+        border: 2px solid #ddd;
+        margin-top: 10px;
+        max-height: 200px;
+    }
+    .alert {
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+    }
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+</style>
 
-        <style>
-            #vehicule-preview {
-            border: 2px solid #ddd;
-            margin-top: 10px;
-            }
-        </style>
-        <div class="no-bottom no-top" id="content">
-            <div id="top"></div>
-            
-            <!-- section begin -->
-            <section id="subheader" class="jarallax text-light">
-                 {% for fond in fonds %}
-                 <img src="{{fond.imagefond.url}}" class="jarallax-img" alt=""> 
-                {%endfor%}
-                    <div class="center-y relative text-center">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-12 text-center">
-									                  <h1>Réservation</h1>
-                                </div>
-                                <div class="clearfix"></div>
+<div class="no-bottom no-top" id="content">
+    <div id="top"></div>
+    
+    <!-- section begin -->
+    <section id="subheader" class="jarallax text-light">
+        {% for fond in fonds %}
+        <img src="{{fond.imagefond.url}}" class="jarallax-img" alt=""> 
+        {% endfor %}
+        <div class="center-y relative text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h1>Réservation</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- section close -->
+
+    <section id="section-hero" aria-label="section" class="no-top" data-bgcolor="#121212">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-12 mt-80 sm-mt-0">
+                    <div class="spacer-single sm-hide"></div>
+                    <div id="booking_form_wrap" class="padding40 rounded-5 shadow-soft" data-bgcolor="#ffffff">
+                        {% if messages %}
+                        <div id="message-container">
+                            {% for message in messages %}
+                            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+                                {{ message }}
                             </div>
+                            {% endfor %}
                         </div>
-                    </div>
-            </section>
-            <!-- section close -->
+                        {% endif %}
 
-            <section id="section-hero" aria-label="section" class="no-top" data-bgcolor="#121212">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-12 mt-80 sm-mt-0">
-                            <div class="spacer-single sm-hide"></div>
-                            <div id="booking_form_wrap" class="padding40 rounded-5 shadow-soft" data-bgcolor="#ffffff">
-
-                                {% if messages %}
-                                <div id="message-container">
-                                    {% for message in messages %}
-                                    <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
-                                        {{ message }}
-                                    </div>
-                                    {% endfor %}
+                        <form method="post" enctype="multipart/form-data" action="{% url 'reser' %}">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="date_debut">Date de début</label>
+                                    <input type="date" id="date_debut" name="date_debut" class="form-control" required>
                                 </div>
-                                {% endif %}
 
-                                
-                               <form method="post" enctype="multipart/form-data" action="{% url 'reser' %}">
-                                    {% csrf_token %}
-
-                                    <div class="row">
-                                        <!-- Sélection du véhicule -->
-                                        <div class="col-lg-6">
-                                            <label for="vehicule">Véhicule</label>
-                                            <select name="vehicule" id="vehicule" class="form-control" required>
-                                                {% for voiture in vehicules %}
-                                                    <option value="{{ voiture.id }}" data-img="{{ voiture.image.url }}">
-                                                        {{ voiture.marque }} {{ voiture.modele }} - prix par jour: {{ voiture.prix_par_jour }} FCFA
-                                                    </option>
-                                                {% endfor %}
-                                            </select>
-                                            <div class="mt-3">
-                                                <img id="vehicule-preview" src="{{ vehicules.0.image.url }}" alt="Aperçu véhicule"
-                                                    class="img-thumbnail" style="max-height: 200px;">
-                                            </div>
-                                        </div>
-
-                                        <!-- Lieu de prise en charge -->
-                                        <div class="col-lg-6">
-                                            <label for="lieu_prise">Lieu de prise en charge</label>
-                                            <select name="lieu_prise" id="lieu_prise" class="form-control" required>
-                                                <option value="yopougon">Yopougon</option>
-                                                <option value="cocody">Cocody</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <!-- Destination -->
-                                        <div class="col-lg-6">
-                                            <label for="destination">Destination</label>
-                                            <select name="destination" id="destination" class="form-control" required>
-                                                {% for vil in city %}
-                                                    <option value="{{ vil.titre }}">{{ vil.titre }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-
-                                        <!-- Prix total -->
-                                        <div class="col-lg-6">
-                                            <label for="prix_total">Montant à payer</label>
-                                            <input type="text" id="prix_total" name="prix_total" class="form-control" readonly>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <!-- Date début -->
-                                        <div class="col-lg-6">
-                                            <label for="date_debut">Date de début</label>
-                                            <input type="date" id="date_debut" name="date_debut" class="form-control" required>
-                                        </div>
-
-                                        <!-- Date fin -->
-                                        <div class="col-lg-6">
-                                            <label for="date_fin">Date de fin</label>
-                                            <input type="date" id="date_fin" name="date_fin" class="form-control" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <!-- Pièce d'identité recto -->
-                                        <div class="col-lg-6">
-                                            <label for="piece_identite_recto">Pièce d'identité (Recto)</label>
-                                            <input type="file" name="piece_identite_recto" id="piece_identite_recto" class="form-control" accept="image/*,.pdf" required>
-                                        </div>
-
-                                        <!-- Pièce d'identité verso -->
-                                        <div class="col-lg-6">
-                                            <label for="piece_identite_verso">Pièce d'identité (Verso)</label>
-                                            <input type="file" name="piece_identite_verso" id="piece_identite_verso" class="form-control" accept="image/*,.pdf" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-12 mt-4">
-                                            <button type="submit" class="btn btn-primary w-100">Valider la réservation</button>
-                                        </div>
-                                    </div>
-                                </form>
-
+                                <div class="col-lg-6">
+                                    <label for="date_fin">Date de fin</label>
+                                    <input type="date" id="date_fin" name="date_fin" class="form-control" required>
                                 </div>
-                        </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-lg-6">
+                                    <label for="vehicule">Véhicule</label>
+                                    <select name="vehicule" id="vehicule" class="form-control" required>
+                                        <option value="">-- Sélectionnez une période pour voir les véhicules --</option>
+                                    </select>
+                                    <div class="mt-3">
+                                        <img id="vehicule-preview" class="img-thumbnail" style="display: none;" alt="Aperçu véhicule sélectionné">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <label for="lieu_prise">Lieu de prise en charge</label>
+                                    <select name="lieu_prise" id="lieu_prise" class="form-control" required>
+                                        <option value="yopougon">Yopougon</option>
+                                        <option value="cocody">Cocody</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-lg-6">
+                                    <label for="destination">Destination</label>
+                                    <select name="destination" id="destination" class="form-control" required>
+                                        {% for vil in city %}
+                                        <option value="{{ vil.titre }}">{{ vil.titre }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <label for="prix_total">Montant à payer</label>
+                                    <input type="text" id="prix_total" name="prix_total" class="form-control" readonly>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-lg-6">
+                                    <label for="piece_identite_recto">Pièce d'identité (Recto)</label>
+                                    <input type="file" name="piece_identite_recto" id="piece_identite_recto" class="form-control" accept="image/*,.pdf" required>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <label for="piece_identite_verso">Pièce d'identité (Verso)</label>
+                                    <input type="file" name="piece_identite_verso" id="piece_identite_verso" class="form-control" accept="image/*,.pdf" required>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary w-100">Valider la réservation</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                     <div class="row text-light">
-                    
-                            <div class="col-12">
-                                <div class="container-timeline">
-                         <ul>
+                </div>
+            </div>
+            
+            <div class="row text-light">
+                <div class="col-12">
+                    <div class="container-timeline">
+                        <ul>
                             {% for parti in parti1accueil %}
-                                <li>
-                                    <h4> {{ parti.titre }}</h4>
-                                    <p>{{ parti.description }}</p>
-                                </li>
+                            <li>
+                                <h4>{{ parti.titre }}</h4>
+                                <p>{{ parti.description }}</p>
+                            </li>
                             {% endfor %}
                         </ul>
                     </div>
-                    </div>
                 </div>
-                </div>
-            </section>
-            <section aria-label="section" class="pt40 pb40 text-light">
-                <div class="wow fadeInRight d-flex">
-                  <div class="de-marquee-list">
-                   
-                    <div class="d-item">
-                        {% for defil in defiles %} 
-                      <span class="d-item-txt">{{defil.titre}}</span>
-                      <span class="d-item-display">
-                        <i class="d-item-dot"></i>
-                      </span>
-                    {%empty%}
-                     </div>
-                   {%endfor%}
-                  </div>
-                </div>
-
-                  <div class="wow fadeInRight d-flex">
-                  <div class="de-marquee-list">
-                   
-                    <div class="d-item">
-                        {% for defil in defiles %} 
-                      <span class="d-item-txt">{{defil.titre}}</span>
-                      <span class="d-item-display">
-                        <i class="d-item-dot"></i>
-                      </span>
-                    {%empty%}
-                     </div>
-                   {%endfor%}
-                  </div>
-                </div>
-                </div>
-            </section>
-
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    const messageContainer = document.getElementById("message-container");
-                    if (messageContainer) {
-                    setTimeout(() => {
-                        messageContainer.style.transition = "opacity 0.5s ease";
-                        messageContainer.style.opacity = "0";
-                        setTimeout(() => {
-                        messageContainer.remove();
-                        }, 500);
-                    }, 10000); // 4 secondes d'affichage
-                    }
-                });
-            </script>
-
-
-			
+            </div>
         </div>
-        <!-- content close -->
+    </section>
 
-        <a href="quick-booking.html#" id="back-to-top"></a>
-        
-     
+    <section aria-label="section" class="pt40 pb40 text-light">
+        <div class="wow fadeInRight d-flex">
+            <div class="de-marquee-list">
+                {% for defil in defiles %} 
+                <div class="d-item">
+                    <span class="d-item-txt">{{defil.titre}}</span>
+                    <span class="d-item-display">
+                        <i class="d-item-dot"></i>
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</div>
 
-
-    <!-- Javascript Files
-    ================================================== -->
-    <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="{% static 'assets/js/plugins.js'%}"></script>
-    <script src="{% static 'assets/js/designesia.js'%}"></script>
-    <script src="{% static 'assets/js/validation-booking.js'%}"></script>
-
- <script>
-    function previewImage(input, previewId) {
-      const preview = document.getElementById(previewId);
-      const file = input.files[0];
-      
-      if (file) {
-          const reader = new FileReader();
-          
-          reader.onload = function(e) {
-              preview.src = e.target.result;
-              preview.classList.remove('d-none');
-          }
-          
-          reader.readAsDataURL(file);
-      }
-  }
-
-  document.addEventListener("DOMContentLoaded", function () {
-  const vehiculeSelect = document.getElementById("vehicule");
-  const imagePreview = document.getElementById("vehicule-preview");
-
-  function updateImage() {
-    const selectedOption = vehiculeSelect.options[vehiculeSelect.selectedIndex];
-    const imageUrl = selectedOption.getAttribute("data-img");
-    if (imageUrl) {
-      imagePreview.src = imageUrl;
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Gestion des messages
+    const messageContainer = document.getElementById("message-container");
+    if (messageContainer) {
+        setTimeout(() => {
+            messageContainer.style.transition = "opacity 0.5s ease";
+            messageContainer.style.opacity = "0";
+            setTimeout(() => {
+                messageContainer.remove();
+            }, 500);
+        }, 5000);
     }
-  }
 
-  // Mise à jour initiale
-  updateImage();
+    // Éléments du formulaire
+    const dateDebut = document.getElementById("date_debut");
+    const dateFin = document.getElementById("date_fin");
+    const vehiculeSelect = document.getElementById("vehicule");
+    const imagePreview = document.getElementById("vehicule-preview");
+    const prixTotal = document.getElementById("prix_total");
 
-  // Mise à jour lors d’un changement
-  vehiculeSelect.addEventListener("change", updateImage);
+    // Fonction pour calculer le nombre de jours
+    function calculerJours(debut, fin) {
+        const diffTime = Math.abs(new Date(fin) - new Date(debut));
+        return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    }
+
+    // Fonction pour mettre à jour les véhicules disponibles
+    function updateVehicules() {
+        const debut = dateDebut.value;
+        const fin = dateFin.value;
+
+        if (!debut || !fin) {
+            vehiculeSelect.innerHTML = '<option value="">-- Sélectionnez une période pour voir les véhicules --</option>';
+            imagePreview.style.display = "none";
+            prixTotal.value = "";
+            return;
+        }
+
+        // Vérifier que la date de fin est après la date de début
+        if (new Date(fin) < new Date(debut)) {
+            vehiculeSelect.innerHTML = '<option value="" disabled selected>La date de fin doit être après la date de début</option>';
+            imagePreview.style.display = "none";
+            prixTotal.value = "";
+            return;
+        }
+
+        fetch("{% url 'vehicules_disponibles' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `date_debut=${debut}&date_fin=${fin}`
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Erreur réseau');
+            return response.json();
+        })
+        .then(data => {
+            vehiculeSelect.innerHTML = '';
+
+            if (data.vehicules && data.vehicules.length > 0) {
+                vehiculeSelect.innerHTML = '<option value="">-- Sélectionnez un véhicule --</option>';
+                
+                data.vehicules.forEach(v => {
+                    const option = document.createElement('option');
+                    option.value = v.id;
+                    option.textContent = `${v.marque} ${v.modele} - ${v.prix_par_jour} FCFA/jour`;
+                    option.setAttribute('data-img', v.image_url);
+                    option.setAttribute('data-prix', v.prix_par_jour);
+                    vehiculeSelect.appendChild(option);
+                });
+            } else {
+                vehiculeSelect.innerHTML = '<option value="" disabled selected>Aucun véhicule disponible pour cette période</option>';
+                imagePreview.style.display = "none";
+                imagePreview.src = "";
+                prixTotal.value = "";
+            }
+        })
+        .catch(error => {
+            console.error("Erreur:", error);
+            vehiculeSelect.innerHTML = '<option value="" disabled selected>Erreur lors du chargement des véhicules</option>';
+        });
+    }
+
+    // Fonction pour mettre à jour l'image et le prix
+    function updateDetails() {
+        const selectedOption = vehiculeSelect.selectedOptions[0];
+        
+        // Mise à jour de l'image
+        if (selectedOption && selectedOption.hasAttribute('data-img')) {
+            imagePreview.src = selectedOption.getAttribute('data-img');
+            imagePreview.style.display = "block";
+        } else {
+            imagePreview.style.display = "none";
+        }
+        
+        // Mise à jour du prix
+        if (selectedOption && selectedOption.hasAttribute('data-prix') && dateDebut.value && dateFin.value) {
+            const prixParJour = parseFloat(selectedOption.getAttribute('data-prix'));
+            const jours = calculerJours(dateDebut.value, dateFin.value);
+            prixTotal.value = (prixParJour * jours).toFixed(2) + " FCFA";
+        } else {
+            prixTotal.value = "";
+        }
+    }
+    
+
+    // Écouteurs d'événements
+    dateDebut.addEventListener("change", function() {
+        updateVehicules();
+        updateDetails();
+    });
+
+    dateFin.addEventListener("change", function() {
+        if (dateDebut.value) {
+            updateVehicules();
+            updateDetails();
+        }
+    });
+
+    vehiculeSelect.addEventListener("change", updateDetails);
 });
-
-
 </script>
 
+<a href="#" id="back-to-top"></a>
+<script src="https://maps.googleapis.com/maps/api/js?key=VOTRE_CLE_API" async defer></script>
+
+
+<script src="{% static 'assets/js/plugins.js' %}"></script>
+<script src="{% static 'assets/js/designesia.js' %}"></script>
 {% endblock %}

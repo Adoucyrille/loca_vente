@@ -15,6 +15,9 @@ from django.shortcuts import get_object_or_404
 from xhtml2pdf import pisa
 from django.http import HttpResponse
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 
 
 
@@ -465,3 +468,60 @@ def supprimer_reservation(request, pk):
     return redirect('commandes')
 
 
+@csrf_exempt
+def get_available_vehicles(request):
+    if request.method == 'POST':
+        try:
+            date_debut = request.POST.get('date_debut')
+            date_fin = request.POST.get('date_fin')
+
+            if not date_debut or not date_fin:
+                return JsonResponse({'error': 'Dates manquantes'}, status=400)
+
+            try:
+                date_debut = datetime.strptime(date_debut, '%Y-%m-%d').date()
+                date_fin = datetime.strptime(date_fin, '%Y-%m-%d').date()
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
+                return JsonResponse({'error': 'Format de date invalide'}, status=400)
+
+            if date_debut > date_fin:
+                return JsonResponse({'error': 'La date de fin doit être après la date de début'}, status=400)
+
+            # Récupère les véhicules déjà réservés
+            reserved_vehicle_ids = Reservation.objects.filter(
+                date_debut__lte=date_fin,
+                date_fin__gte=date_debut,
+                statut__in=['EN_ATTENTE', 'VALIDEE']
+            ).values_list('vehicule_id', flat=True)
+
+            # Véhicules disponibles
+            available_vehicles = Vehicule.objects.filter(
+                disponible=True
+            ).exclude(
+                id__in=reserved_vehicle_ids
+            )
+
+            # Construction de la réponse JSON
+            vehicules_data = []
+            for v in available_vehicles:
+                vehicules_data.append({
+                    'id': v.id,
+                    'marque': v.marque,
+                    'modele': v.modele,
+                    'prix_par_jour': str(v.prix_par_jour),
+                    'image_url': v.image.url if v.image else ''
+                })
+
+            return JsonResponse({
+                'vehicules': vehicules_data,
+                'count': len(vehicules_data)
+            })
+
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return JsonResponse({'error': str(e)}, status=500)
+
+    return JsonResponse({'error': 'Méthode non autorisée'}, status=405)

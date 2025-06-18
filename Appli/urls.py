@@ -16,6 +16,8 @@ urlpatterns = [
     path('commandes/', views.commandes, name='commandes'),
     path('reservation/pdf/<int:pk>/', views.reservation_pdf, name='reservation_pdf'),
     path('reservation/modifier/<int:pk>/', views.modifier_reservation, name='modifier_reservation'),
-    path('reservation/supprimer/<int:pk>/', views.supprimer_reservation, name='supprimer_reservation')
+    path('reservation/supprimer/<int:pk>/', views.supprimer_reservation, name='supprimer_reservation'),
+    path('ajax/vehicules-disponibles/', views.get_available_vehicles, name='vehicules_disponibles'),
+
 
 ]
