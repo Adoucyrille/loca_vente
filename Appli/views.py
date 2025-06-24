@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from .models import Utilisateur
+
 from .models import Base, Fond, Accueilparti1, Defile, Choix, Vehicule, Choix2, Actu, Impression, Question, Ville, Reservation, Publicite, Direction
 import re
 from django.contrib.auth.decorators import login_required
@@ -14,9 +15,10 @@ from django.template.loader import get_template
 from django.shortcuts import get_object_or_404
 from xhtml2pdf import pisa
 from django.http import HttpResponse
-
+from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import traceback
 
 
 
@@ -160,17 +162,17 @@ def connexion(request):
         # Vérification des champs
         if not username or not password:
             messages.error(request, "Veuillez remplir tous les champs.")
-            return redirect('connexion')
+            return redirect('Appli:connexion')
 
         # Authentification
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
             login(request, user)
-            return redirect('accueil')  # Redirige vers la page d'accueil après connexion
+            return redirect('Appli:accueil')  # Redirige vers la page d'accueil après connexion
         else:
             messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
-            return redirect('connexion')
+            return redirect('Appli:connexion')
 
     return render(request, './Appli/connexion.html')  # Formulaire de connexion
 
@@ -240,7 +242,7 @@ def inscrire(request):
             )
             login(request, user)
             messages.success(request, "Inscription réussie ! Bienvenue !")
-            return redirect('accueil')
+            return redirect('Appli:accueil')
 
     return render(request, './Appli/register.html', {
         'error': error,
@@ -250,7 +252,7 @@ def inscrire(request):
 
 def deconnexion(request):
     logout(request)  
-    return redirect('connexion')
+    return redirect('Appli:connexion')
 
 @login_required
 def reser(request):
@@ -264,25 +266,26 @@ def reser(request):
 
     if request.method == 'POST':
         try:
-            # 🔧 Correction ici : correspond à name="vehicule"
+            # Récupération des champs du formulaire
             vehicule_id = request.POST.get('vehicule')
             date_debut_str = request.POST.get('date_debut')
             date_fin_str = request.POST.get('date_fin')
             lieu_prise = request.POST.get('lieu_prise')
             destination = request.POST.get('destination')
-
             id_recto_file = request.FILES.get('piece_identite_recto')
             id_verso_file = request.FILES.get('piece_identite_verso')
 
-            # Vérification des champs
+            # Vérification des champs obligatoires
             if not all([vehicule_id, date_debut_str, date_fin_str, lieu_prise, destination]):
                 raise ValidationError("Tous les champs sont obligatoires.")
 
+            # Véhicule existant ?
             try:
                 vehicule = Vehicule.objects.get(pk=vehicule_id)
             except Vehicule.DoesNotExist:
                 raise ValidationError("Véhicule non trouvé.")
 
+            # Format de date correct ?
             try:
                 date_debut = datetime.strptime(date_debut_str, '%Y-%m-%d').date()
                 date_fin = datetime.strptime(date_fin_str, '%Y-%m-%d').date()
@@ -293,16 +296,15 @@ def reser(request):
                 raise ValidationError("La date de fin doit être postérieure ou égale à la date de début.")
             if date_debut < date.today():
                 raise ValidationError("La date de début ne peut pas être dans le passé.")
-
             if not vehicule.disponible:
                 raise ValidationError("Ce véhicule n'est pas disponible.")
 
+            # Vérifier si le véhicule est déjà réservé
             chevauchement = Reservation.objects.filter(
                 vehicule=vehicule,
                 date_debut__lte=date_fin,
                 date_fin__gte=date_debut,
             ).exclude(statut__in=['ANNULE', 'TERMINE']).exists()
-
             if chevauchement:
                 raise ValidationError("Le véhicule est déjà réservé à ces dates.")
 
@@ -320,7 +322,7 @@ def reser(request):
                 prix_total *= Decimal('0.9')
             prix_total = prix_total.quantize(Decimal('0.01'))
 
-            # Création
+            # Création de la réservation
             reservation = Reservation.objects.create(
                 utilisateur=request.user,
                 vehicule=vehicule,
@@ -334,13 +336,26 @@ def reser(request):
                 statut='EN_ATTENTE'
             )
 
+            # Envoi d'email au superutilisateur
+            superusers = Utilisateur.objects.filter(is_superuser=True, is_active=True)
+            for admin in superusers:
+                if admin.email:
+                    send_mail(
+                        subject="Nouvelle réservation reçue",
+                        message=f"Une nouvelle réservation a été effectuée par {request.user.username} pour le véhicule {vehicule.modele} du {date_debut} au {date_fin}.",
+                        from_email=None,  # DEFAULT_FROM_EMAIL utilisé
+                        recipient_list=[admin.email],
+                        fail_silently=False,
+                    )
+
             messages.success(request, "Votre réservation est enregistrée et en attente de validation.")
+            print("✅ Message de succès envoyé.")
             return redirect('Appli:reser')
 
         except ValidationError as e:
             messages.error(request, str(e))
-        except Exception as e:
-            print("Erreur serveur:", e)
+       
+            traceback.print_exc()
 
     context = {
         'bases': bases,
@@ -353,7 +368,6 @@ def reser(request):
     }
 
     return render(request, 'Appli/quick-booking.html', context)
-
 @login_required
 def contact(request):
     fonds = Fond.objects.all()
@@ -379,7 +393,7 @@ def contact(request):
         )
 
         messages.success(request, "Merci pour votre impression !")
-        return redirect('contact')
+        return redirect('Applii:contact')
 
     return render(request, './Appli/contact.html', {
         'bases': bases,
@@ -450,7 +464,7 @@ def modifier_reservation(request, pk):
         reservation.lieu_prise = request.POST.get('lieu_prise')
         reservation.save()
         messages.success(request, "Réservation modifiée avec succès.")
-        return redirect('commandes')
+        return redirect('Appli:commandes')
 
     return render(request, 'Appli/modifier_reservation.html', {
         'reservation': reservation,
@@ -464,8 +478,8 @@ def supprimer_reservation(request, pk):
     if request.method == 'POST':
         reservation.delete()
         messages.success(request, "Réservation supprimée.")
-        return redirect('commandes')
-    return redirect('commandes')
+        return redirect('Appli:commandes')
+    return redirect('Appli:commandes')
 
 
 @csrf_exempt

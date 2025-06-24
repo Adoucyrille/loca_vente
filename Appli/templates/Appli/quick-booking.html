@@ -58,7 +58,7 @@
                         </div>
                         {% endif %}
 
-                        <form method="post" enctype="multipart/form-data" action="{% url 'reser' %}">
+                        <form method="post" enctype="multipart/form-data" action="{% url 'Appli:reser' %}">
                             {% csrf_token %}
                             <div class="row">
                                 <div class="col-lg-6">
@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
-        fetch("{% url 'vehicules_disponibles' %}", {
+        fetch("{% url 'Appli:vehicules_disponibles' %}", {
             method: 'POST',
             headers: {
                 'X-CSRFToken': '{{ csrf_token }}',

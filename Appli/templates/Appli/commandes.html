@@ -1,61 +1,86 @@
-{% extends 'Appli/base.html' %} 
-{% load static %}     
-{% block navbarfooter %} 
+{% extends 'Appli/base.html' %}
+{% load static %}
+{% block navbarfooter %}
 
+<style>
+    .reservation-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .reservation-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    .badge-status {
+        font-size: 0.9rem;
+        padding: 0.4em 0.6em;
+    }
+</style>
 
+<div class="container py-5">
 
-
-<div class="container mt-5">
-    <section id="section-hero" aria-label="section" class="jarallax">
-         {% for fond in fonds %}
-        <img src="{{fond.imagefond.url}}" class="jarallax-img" alt=""> 
-        {%endfor%}
+    <!-- Background image section -->
+    <section id="section-hero" class="jarallax mb-5">
+        {% for fond in fonds %}
+            <img src="{{ fond.imagefond.url }}" class="jarallax-img" alt="Fond">
+        {% endfor %}
     </section>
-    <section>
-    <h2 class="mb-4">Mes Réservations</h2>
 
+    <!-- Title -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Mes Réservations</h2>
+        <p class="text-muted">Retrouvez ici toutes vos réservations de véhicules.</p>
+    </div>
+
+    <!-- Content -->
     {% if reservations %}
-        <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             {% for reservation in reservations %}
             <div class="col">
-                <div class="card shadow-sm">
-                    <img src="{{ reservation.vehicule.image.url }}" class="card-img-top" alt="Image du véhicule" style="height: 200px; object-fit: cover;">
+                <div class="card reservation-card h-100 shadow-sm border-0">
+                    <img src="{{ reservation.vehicule.image.url }}" class="card-img-top" alt="Véhicule" style="height: 200px; object-fit: cover;">
                     <div class="card-body">
-                        <h5 class="card-title">{{ reservation.vehicule.marque }} {{ reservation.vehicule.modele }}</h5>
-                        <p class="card-text">
-                            Du <strong>{{ reservation.date_debut }}</strong> au <strong>{{ reservation.date_fin }}</strong><br>
-                            Lieu de prise : {{ reservation.lieu_prise }}<br>
-                            Destination : {{ reservation.destination }}<br>
-                            Montant : <strong>{{ reservation.prix_total }} FCFA</strong><br>
-                            Statut : <span class="badge bg-info text-dark">{{ reservation.statut }}</span>
-                        </p>
-                       <a class="btn btn-sm btn-outline-primary" href="{% url 'reservation_pdf' pk=reservation.pk %}" target="_blank">
-                            Télécharger le reçu
-                        </a>
+                        <h5 class="card-title text-primary">{{ reservation.vehicule.marque }} {{ reservation.vehicule.modele }}</h5>
+                        <ul class="list-unstyled small mb-3">
+                            <li><i class="bi bi-calendar-event me-2"></i>Du <strong>{{ reservation.date_debut }}</strong> au <strong>{{ reservation.date_fin }}</strong></li>
+                            <li><i class="bi bi-geo-alt me-2"></i>Lieu de prise : {{ reservation.lieu_prise }}</li>
+                            <li><i class="bi bi-signpost-2 me-2"></i>Destination : {{ reservation.destination }}</li>
+                            <li><i class="bi bi-currency-exchange me-2"></i>Montant : <strong>{{ reservation.prix_total }} FCFA</strong></li>
+                            <li>Statut :
+                                <span class="badge bg-info text-dark badge-status">
+                                    {{ reservation.statut }}
+                                </span>
+                            </li>
+                        </ul>
 
-                        <a class="btn btn-sm btn-warning" href="{% url 'modifier_reservation' pk=reservation.pk %}">
-                            Modifier
-                        </a>
-
-                        <form method="post" action="{% url 'supprimer_reservation' pk=reservation.pk %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Confirmer la suppression ?')">
-                                Supprimer
-                            </button>
-                        </form>
-
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="{% url 'Appli:reservation_pdf' pk=reservation.pk %}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                Télécharger le reçu
+                            </a>
+                            <a href="{% url 'Appli:modifier_reservation' pk=reservation.pk %}" class="btn btn-sm btn-warning">
+                                Modifier
+                            </a>
+                            <form method="post" action="{% url 'Appli:supprimer_reservation' pk=reservation.pk %}" onsubmit="return confirm('Confirmer la suppression ?');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    Supprimer
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
     {% else %}
-        <p class="text-muted">Vous n’avez encore effectué aucune réservation.</p>
+        <div class="alert alert-secondary text-center">
+            Vous n’avez encore effectué aucune réservation.
+        </div>
     {% endif %}
-    </section>
+
 </div>
 
-<script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="{% static 'assets/js/plugins.js'%}"></script>
-<script src="{% static 'assets/js/designesia.js'%}"></script>
+<!-- Scripts -->
+<script src="{% static 'assets/js/plugins.js' %}"></script>
+<script src="{% static 'assets/js/designesia.js' %}"></script>
 
 {% endblock %}

@@ -137,7 +137,7 @@
 
                             
 							
-							<form name="contactForm" id='contact_form' class="form-border" method="post" action="{% url 'inscrire' %} ">
+							<form name="contactForm" id='contact_form' class="form-border" method="post" action="{% url 'Appli:inscrire' %} ">
                               
 
                                 {% csrf_token %}
@@ -244,7 +244,7 @@
 
                                     </div>
                                     <div>
-                                            <p> Déjà inscrire?<a class="btn-main btn-fullwidth rounded-3" href="{% url 'connexion' %}">Connectez-vous</a></p>
+                                            <p> Déjà inscrire?<a class="btn-main btn-fullwidth rounded-3" href="{% url 'Appli:connexion' %}">Connectez-vous</a></p>
                                     </div>
 
                                 </div>
