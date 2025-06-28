@@ -12,6 +12,16 @@
 </div>
 <div class="container mt-5">
     <h3>Modifier ma réservation</h3>
+     {% if messages %}
+        <div id="message-container">
+        {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+                 {{ message }}
+            </div>
+             {% endfor %}
+            </div>
+     {% endif %}
+
     <form method="post">
         {% csrf_token %}
         <label>Date de début :</label>
@@ -29,6 +39,21 @@
         <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
     </form>
 </div>
+ <script>
+ document.addEventListener("DOMContentLoaded", function () {
+    const messageContainer = document.getElementById("message-container");
+         if (messageContainer) {
+            setTimeout(() => {
+                 messageContainer.style.transition = "opacity 0.5s ease";
+                 messageContainer.style.opacity = "0";
+                    setTimeout(() => {
+                        messageContainer.remove();
+                         }, 500);
+                    }, 7000); // 4 secondes d'affichage
+                    }
+            });
+</script>
+
 <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="{% static 'assets/js/plugins.js' %}"></script>
 <script src="{% static 'assets/js/designesia.js' %}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgiM7ogCAA2Y5pgSk2KXZfxF5S_1jsptA&amp;libraries=places&amp;callback=initPlaces" async="" defer=""></script>

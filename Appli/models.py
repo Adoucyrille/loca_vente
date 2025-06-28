@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 
 
+
 # ----------------------------
 # Utilisateur personnalisé
 # ----------------------------
@@ -66,6 +67,8 @@ class Reservation(models.Model):
     destination = models.CharField(max_length=100)
     piece_identite_recto = models.FileField(upload_to='pieces_identite/recto/', blank=True, null=True)
     piece_identite_verso = models.FileField(upload_to='pieces_identite/verso/', blank=True, null=True)
+    annulee = models.BooleanField(default=False)  # ✅ ajoute cette ligne
+
     
     class Meta:
         ordering = ['-date_creation']
@@ -82,6 +85,8 @@ class Reservation(models.Model):
                 condition=models.Q(statut__in=['CONFIRME', 'EN_COURS'])
             )
         ]
+
+
 
     def clean(self):
         # Validation supplémentaire

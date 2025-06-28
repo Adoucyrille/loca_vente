@@ -1,0 +1,55 @@
+{% extends 'Appli/base.html' %}
+{% load static %}
+{% block navbarfooter %}
+
+<div class="container py-5">
+
+     <section id="section-hero" class="jarallax mb-5">
+        {% for fond in fonds %}
+            <img src="{{ fond.imagefond.url }}" class="jarallax-img" alt="Fond">
+        {% endfor %}
+    </section>
+    <div class="text-center mb-5">
+        <div id="booking_form_wrap" class="padding40 rounded-5 shadow-soft" data-bgcolor="#ffffff">
+                        
+        <h2 class="fw-bold">Historique des Réservations</h2>
+        <p class="text-muted">Consultez vos anciennes réservations ou celles annulées.</p>
+    </div>
+    
+    {% if reservations %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for reservation in reservations %}
+            <div class="col">
+                <div class="card reservation-card h-100 shadow-sm border-0">
+                    <img src="{{ reservation.vehicule.image.url }}" class="card-img-top" alt="Véhicule" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ reservation.vehicule.marque }} {{ reservation.vehicule.modele }}</h5>
+                        <ul class="list-unstyled small mb-3">
+                            <li><i class="bi bi-calendar-event me-2"></i>Du <strong>{{ reservation.date_debut }}</strong> au <strong>{{ reservation.date_fin }}</strong></li>
+                            <li><i class="bi bi-geo-alt me-2"></i>Lieu de prise : {{ reservation.lieu_prise }}</li>
+                            <li><i class="bi bi-signpost-2 me-2"></i>Destination : {{ reservation.destination }}</li>
+                            <li><i class="bi bi-currency-exchange me-2"></i>Montant : <strong>{{ reservation.prix_total }} FCFA</strong></li>
+                            <li>
+                                Statut :
+                                {% if reservation.annulee %}
+                                    <span class="badge bg-danger text-white">Annulée</span>
+                                {% else %}
+                                    <span class="badge bg-secondary text-white">Terminée</span>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-secondary text-center">
+            Aucune réservation passée ou annulée trouvée.
+        </div>
+    {% endif %}
+</div>
+<script src="{% static 'assets/js/plugins.js' %}"></script>
+<script src="{% static 'assets/js/designesia.js' %}"></script>
+
+{% endblock %}

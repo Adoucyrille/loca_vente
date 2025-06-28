@@ -3,6 +3,8 @@ from django.contrib.auth.admin import UserAdmin
 
 from django.urls import reverse
 from django.utils.html import format_html
+from django.core.mail import send_mail
+
 
 from .models import (
     Utilisateur, Vehicule, Reservation, Base, Accueilparti1,
@@ -174,6 +176,7 @@ class ReservationAdmin(admin.ModelAdmin):
     list_per_page = 20
     date_hierarchy = 'date_debut'
     ordering = ('-date_creation',)
+
     
     fieldsets = (
         ('Informations Client', {

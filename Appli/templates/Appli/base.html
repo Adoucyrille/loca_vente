@@ -82,13 +82,18 @@
                                             
                                         </ul>
                                     </li>
-                                    <li><a class="menu-item" href="{% url 'Appli:reser' %}">RESERVATIONS</a>
+                                    <li><a class="menu-item" href="{% url 'Appli:reser' %}">RESERVER</a>
                                         
                                     </li>
-                                    <li><a class="menu-item" href="{% url 'Appli:commandes' %}">Mes Réservations</a>
+                                     <li><a class="menu-item" href="{% url 'Appli:commandes' %}">MES RESERVATIONS</a>
+                                        <ul>
+                                            <li><a class="menu-item" href="{% url 'Appli:historique_reservations' %}">Historique des reservations</a></li>
+                                            
+                                        </ul>
                                     </li>
+                                   
                                     <li>
-                                        <a class="menu-item" href="{% url 'Appli:contact' %}">Contact</a>
+                                        <a class="menu-item" href="{% url 'Appli:contact' %}">CONTACTS</a>
                                         
                                     </li>
                                     <li><a class="menu-item" href="{% url 'Appli:propos' %}">A PROPOS DE NOUS</a>

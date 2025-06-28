@@ -19,6 +19,8 @@ from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import traceback
+from django.utils import timezone
+
 
 
 
@@ -348,6 +350,28 @@ def reser(request):
                         fail_silently=False,
                     )
 
+            # Envoi d'email à l'utilisateur
+            if request.user.email:
+                send_mail(
+                    subject="Confirmation de votre réservation",
+                    message=f"""
+            Bonjour {request.user.get_full_name()},
+
+            Nous avons bien reçu votre demande de réservation pour le véhicule {vehicule.marque} {vehicule.modele}
+            du {date_debut} au {date_fin}.
+
+            Votre demande est actuellement en attente de validation. Veuillez vous rendre dans notre lieu de prise en charge {lieu_prise} avec votre permis et votre carte CNI pour la confirmation.
+
+            Merci pour votre confiance !
+
+            L’équipe de réservation
+                    """,
+                    from_email=None,  # ou settings.DEFAULT_FROM_EMAIL
+                    recipient_list=[request.user.email],
+                    fail_silently=False,
+                )
+                    
+
             messages.success(request, "Votre réservation est enregistrée et en attente de validation.")
             print("✅ Message de succès envoyé.")
             return redirect('Appli:reser')
@@ -438,49 +462,143 @@ def reservation_pdf(request, pk):
 
 @login_required
 def commandes(request):
-    reservations = Reservation.objects.filter(utilisateur=request.user).order_by('-date_debut')
+    reservations = Reservation.objects.filter(utilisateur=request.user, annulee=False)
+
+    today = timezone.now().date()
+    for reservation in reservations:
+        reservation.est_annulable = (
+            not reservation.annulee and
+            reservation.date_debut >= today and
+            reservation.statut == "EN_ATTENTE"
+        )
+
     bases = Base.objects.all()
     fonds = Fond.objects.all()
 
-
-
     return render(request, './Appli/commandes.html', {
         'reservations': reservations,
-        'bases' : bases,
+        'bases': bases,
         'fonds': fonds,
-        
-        })
+    })
 
 @login_required
 def modifier_reservation(request, pk):
     reservation = get_object_or_404(Reservation, pk=pk, utilisateur=request.user)
     bases = Base.objects.all()
     fonds = Fond.objects.all()
+
     if request.method == 'POST':
-        # Tu peux créer un formulaire ou réutiliser le même que pour la création
-        reservation.date_debut = request.POST.get('date_debut')
-        reservation.date_fin = request.POST.get('date_fin')
-        reservation.destination = request.POST.get('destination')
-        reservation.lieu_prise = request.POST.get('lieu_prise')
-        reservation.save()
-        messages.success(request, "Réservation modifiée avec succès.")
-        return redirect('Appli:commandes')
+        try:
+            date_debut = request.POST.get('date_debut')
+            date_fin = request.POST.get('date_fin')
+            destination = request.POST.get('destination')
+            lieu_prise = request.POST.get('lieu_prise')
+
+            # Conversion en objets date
+            date_debut_obj = datetime.strptime(date_debut, '%Y-%m-%d').date()
+            date_fin_obj = datetime.strptime(date_fin, '%Y-%m-%d').date()
+
+            # ✅ Vérification logique des dates
+            if date_fin_obj < date_debut_obj:
+                messages.error(request, "❌ La date de fin doit être superieure ou égale à la date de début.")
+                raise ValueError("Dates invalides")
+
+            # Mise à jour des champs
+            reservation.date_debut = date_debut_obj
+            reservation.date_fin = date_fin_obj
+            reservation.destination = destination
+            reservation.lieu_prise = lieu_prise
+
+            # ✅ Validation des contraintes du modèle
+            reservation.full_clean()  # soulève ValidationError si contrainte violée
+            reservation.save()
+
+            # ✅ Notification admin
+            superusers = Utilisateur.objects.filter(is_superuser=True, is_active=True, email__isnull=False)
+            for admin in superusers:
+                send_mail(
+                    subject="Modification de réservation",
+                    message=f"""
+L'utilisateur {request.user.get_full_name()} ({request.user.email}) a modifié sa réservation :
+
+- Date de début : {reservation.date_debut}
+- Date de fin : {reservation.date_fin}
+- Lieu de prise : {reservation.lieu_prise}
+- Destination : {reservation.destination}
+                    """,
+                    from_email=None,
+                    recipient_list=[admin.email]
+                )
+
+            messages.success(request, "✅ Réservation modifiée avec succès.")
+            return redirect('Appli:commandes')
+
+        except ValueError:
+            pass  # Le message d'erreur a déjà été ajouté
+        except ValidationError as e:
+            messages.error(request, "❌ Modification impossible : " + ", ".join(e.messages))
+
+        except Exception as e:
+            messages.error(request, f"❌ Une erreur est survenue : {str(e)}")
 
     return render(request, 'Appli/modifier_reservation.html', {
         'reservation': reservation,
-        'bases' : bases,
+        'bases': bases,
         'fonds': fonds,
-        })
-
+    })
 @login_required
-def supprimer_reservation(request, pk):
+def annuler_reservation(request, pk):
     reservation = get_object_or_404(Reservation, pk=pk, utilisateur=request.user)
-    if request.method == 'POST':
-        reservation.delete()
-        messages.success(request, "Réservation supprimée.")
-        return redirect('Appli:commandes')
-    return redirect('Appli:commandes')
 
+    if request.method == 'POST':
+        # Vérifie si la date de début est passée
+        if reservation.date_debut < timezone.now().date():
+            messages.error(request, "Vous ne pouvez pas annuler une réservation déjà commencée ou passée.")
+            return redirect('Appli:commandes')
+
+        # Annule la réservation si valide
+        reservation.annulee = True
+        reservation.save(update_fields=['annulee'])
+
+        # ✅ Email aux administrateurs
+        superusers = Utilisateur.objects.filter(is_superuser=True, is_active=True, email__isnull=False)
+        subject = "Annulation de réservation"
+        message = f"""
+L'utilisateur {request.user.get_full_name()} ({request.user.email}) a annulé sa réservation :
+
+- Véhicule : {reservation.vehicule.marque} {reservation.vehicule.modele}
+- Date de début : {reservation.date_debut}
+- Date de fin : {reservation.date_fin}
+- Lieu de prise : {reservation.lieu_prise}
+- Destination : {reservation.destination}
+        """
+        for admin in superusers:
+            send_mail(subject, message, None, [admin.email])
+
+        # ✅ Email à l'utilisateur
+        if request.user.email:
+            send_mail(
+                subject="Confirmation d'annulation de votre réservation",
+                message=f"""
+Bonjour {request.user.first_name},
+
+Votre réservation pour le véhicule {reservation.vehicule.marque} {reservation.vehicule.modele}
+du {reservation.date_debut} au {reservation.date_fin} a bien été annulée.
+
+Merci de votre compréhension.
+
+L’équipe de réservation.
+                """,
+                from_email=None,
+                recipient_list=[request.user.email],
+                fail_silently=False,
+            )
+
+        # ✅ Message flash
+        messages.success(request, "Réservation annulée avec succès.")
+        return redirect('Appli:commandes')
+
+    return redirect('Appli:commandes')
 
 @csrf_exempt
 def get_available_vehicles(request):
@@ -507,7 +625,7 @@ def get_available_vehicles(request):
             reserved_vehicle_ids = Reservation.objects.filter(
                 date_debut__lte=date_fin,
                 date_fin__gte=date_debut,
-                statut__in=['EN_ATTENTE', 'VALIDEE']
+                statut__in=['EN_ATTENTE', 'CONFIRME']
             ).values_list('vehicule_id', flat=True)
 
             # Véhicules disponibles
@@ -539,3 +657,18 @@ def get_available_vehicles(request):
             return JsonResponse({'error': str(e)}, status=500)
 
     return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
+
+@login_required
+def historique_reservations(request):
+    bases = Base.objects.all()
+    fonds = Fond.objects.all()
+    today = timezone.now().date()
+    reservations = Reservation.objects.filter(utilisateur=request.user).filter(
+        date_fin__lt=today
+    ) | Reservation.objects.filter(utilisateur=request.user, annulee=True)
+
+    return render(request, 'Appli/historique.html', {
+        'bases': bases,
+        'fonds': fonds,
+        'reservations': reservations.distinct()
+    })

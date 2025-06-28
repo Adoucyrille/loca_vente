@@ -18,6 +18,8 @@
 
 <div class="container py-5">
 
+
+
     <!-- Background image section -->
     <section id="section-hero" class="jarallax mb-5">
         {% for fond in fonds %}
@@ -27,6 +29,16 @@
 
     <!-- Title -->
     <div class="text-center mb-5">
+        <div id="booking_form_wrap" class="padding40 rounded-5 shadow-soft" data-bgcolor="#ffffff">
+                        {% if messages %}
+                        <div id="message-container">
+                            {% for message in messages %}
+                            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
         <h2 class="fw-bold">Mes Réservations</h2>
         <p class="text-muted">Retrouvez ici toutes vos réservations de véhicules.</p>
     </div>
@@ -59,12 +71,15 @@
                             <a href="{% url 'Appli:modifier_reservation' pk=reservation.pk %}" class="btn btn-sm btn-warning">
                                 Modifier
                             </a>
-                            <form method="post" action="{% url 'Appli:supprimer_reservation' pk=reservation.pk %}" onsubmit="return confirm('Confirmer la suppression ?');">
+                            {% if reservation.est_annulable %}
+                            <form method="post" action="{% url 'Appli:annuler_reservation' pk=reservation.pk %}" onsubmit="return confirm('voulez vous vraiment annuler votre reservation?');">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-sm btn-danger">
-                                    Supprimer
+                                    Annuler
                                 </button>
                             </form>
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>
@@ -78,6 +93,21 @@
     {% endif %}
 
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // Gestion des messages
+    const messageContainer = document.getElementById("message-container");
+    if (messageContainer) {
+        setTimeout(() => {
+            messageContainer.style.transition = "opacity 0.5s ease";
+            messageContainer.style.opacity = "0";
+            setTimeout(() => {
+                messageContainer.remove();
+            }, 500);
+        }, 5000);
+    }
+})
+</script>
 
 <!-- Scripts -->
 <script src="{% static 'assets/js/plugins.js' %}"></script>
