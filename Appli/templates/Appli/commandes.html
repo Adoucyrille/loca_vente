@@ -68,9 +68,12 @@
                             <a href="{% url 'Appli:reservation_pdf' pk=reservation.pk %}" class="btn btn-sm btn-outline-primary" target="_blank">
                                 Télécharger le reçu
                             </a>
+                            {% if reservation.statut != 'CONFIRME' and reservation.statut != 'EN_COURS' and reservation.statut != '' %}
                             <a href="{% url 'Appli:modifier_reservation' pk=reservation.pk %}" class="btn btn-sm btn-warning">
                                 Modifier
                             </a>
+                           {% endif %}
+
                             {% if reservation.est_annulable %}
                             <form method="post" action="{% url 'Appli:annuler_reservation' pk=reservation.pk %}" onsubmit="return confirm('voulez vous vraiment annuler votre reservation?');">
                                 {% csrf_token %}

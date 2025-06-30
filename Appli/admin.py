@@ -17,11 +17,32 @@ from django.utils.html import format_html
 # Personnalisation de l'affichage des utilisateurs
 class UtilisateurAdmin(UserAdmin):
     model = Utilisateur
-    list_display = ('username', 'email', 'telephone', 'adresse', 'is_staff', 'is_active')
+
+    list_display = ('username', 'email', 'telephone', 'adresse', 'photo_profil', 'is_staff', 'is_active')
+    list_filter = ('is_staff', 'is_active', 'groups')
+
     fieldsets = UserAdmin.fieldsets + (
-        ('Infos personnelles', {'fields': ('telephone', 'adresse')}),
+        ('Informations personnelles', {
+            'fields': ('telephone', 'adresse', 'photo_profil'),
+        }),
     )
 
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        ('Informations personnelles', {
+            'classes': ('wide',),
+            'fields': ('telephone', 'adresse', 'photo_profil'),
+        }),
+    )
+
+    search_fields = ('username', 'email', 'telephone')
+    ordering = ('username',)
+
+    def afficher_photo(self, obj):
+        if obj.photo:
+            return f'<img src="{obj.photo.url}" style="height:40px;border-radius:50%;">'
+        return "Aucune"
+    afficher_photo.allow_tags = True
+    afficher_photo.short_description = "photo_profil"
 
 # Inline pour les caractéristiques techniques (OneToOne)
 class CaracteristiqueTechniqueInline(admin.StackedInline):

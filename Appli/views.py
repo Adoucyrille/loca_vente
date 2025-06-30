@@ -416,8 +416,8 @@ def contact(request):
             photo=photo
         )
 
-        messages.success(request, "Merci pour votre impression !")
-        return redirect('Applii:contact')
+        messages.success(request, "Merci, vos avis et suggestions ont été pris en compte !")
+        return redirect('Appli:contact')
 
     return render(request, './Appli/contact.html', {
         'bases': bases,
@@ -462,9 +462,15 @@ def reservation_pdf(request, pk):
 
 @login_required
 def commandes(request):
-    reservations = Reservation.objects.filter(utilisateur=request.user, annulee=False)
-
     today = timezone.now().date()
+    
+    # Exclure les réservations terminées
+    reservations = Reservation.objects.filter(
+        utilisateur=request.user,
+        annulee=False
+    ).exclude(statut="TERMINE")
+
+    # Déterminer si une réservation est annulable
     for reservation in reservations:
         reservation.est_annulable = (
             not reservation.annulee and
@@ -660,15 +666,66 @@ def get_available_vehicles(request):
 
 @login_required
 def historique_reservations(request):
+    reservations = Reservation.objects.filter(
+        utilisateur=request.user
+    ).filter(
+        statut="TERMINE"
+    ) | Reservation.objects.filter(
+        utilisateur=request.user,
+        annulee=True
+    )
+
+    # On évite les doublons si une réservation est à la fois terminée et annulée
+    reservations = reservations.distinct().order_by('-date_debut')
+
     bases = Base.objects.all()
     fonds = Fond.objects.all()
-    today = timezone.now().date()
-    reservations = Reservation.objects.filter(utilisateur=request.user).filter(
-        date_fin__lt=today
-    ) | Reservation.objects.filter(utilisateur=request.user, annulee=True)
 
     return render(request, 'Appli/historique.html', {
+        'reservations': reservations,
         'bases': bases,
         'fonds': fonds,
-        'reservations': reservations.distinct()
     })
+
+@login_required
+def mon_profil(request):
+    user = request.user
+    if request.method == 'POST' and request.FILES.get('photo_profil'):
+        user.photo_profil = request.FILES['photo_profil']
+        user.save()
+        return redirect('Appli:profil')  # mets le nom réel de ton URL
+    bases = Base.objects.all()
+    fonds = Fond.objects.all()
+    return render(request, 'Appli/profile.html', {
+        'fonds': fonds,
+        'bases': bases,
+        'user': user
+    })
+
+
+@login_required
+def modifier_profil(request):
+    if request.method == 'POST':
+        user = request.user
+        user.username = request.POST.get('username')
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
+        user.telephone = request.POST.get('telephone')
+        user.adresse = request.POST.get('adresse')
+
+        # Modification mot de passe (facultatif)
+        password = request.POST.get('password')
+        password_confirm = request.POST.get('password_confirm')
+        if password:
+            if password == password_confirm:
+                user.set_password(password)
+            else:
+                messages.error(request, "Les mots de passe ne correspondent pas.")
+                return redirect('Appli:profil')
+
+        user.save()
+        messages.success(request, "Profil mis à jour avec succès.")
+        return redirect('Appli:profil')
+
+

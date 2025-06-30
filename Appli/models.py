@@ -10,10 +10,10 @@ from django.core.exceptions import ValidationError
 class Utilisateur(AbstractUser):
     telephone = models.CharField(max_length=15, blank=True, null=True)
     adresse = models.TextField(blank=True, null=True)
+    photo_profil = models.ImageField(upload_to='photos_profil/', default='photos_profil/default.jpg', blank=True, null=True)
 
     def __str__(self):
         return self.username
-
 # ----------------------------
 # Types de véhicules personnalisés
 # ----------------------------

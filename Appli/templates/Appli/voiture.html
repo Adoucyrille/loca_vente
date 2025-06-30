@@ -1,4 +1,4 @@
-{% load static %}
+{% load static %}  
 <!DOCTYPE html>
 <html lang="Fr">
 
@@ -19,7 +19,7 @@
     <link href="{% static 'assets/css/coloring.css' %}" rel="stylesheet" type="text/css">
     <!-- color scheme -->
     <link id="colors" href="{% static 'assets/css/colors/scheme-01.css' %}" rel="stylesheet" type="text/css">
-</head>
+</head> 
 <style>
     /* Pour le bouton de déconnexion */
 .menu_side_area {
@@ -97,57 +97,123 @@
                             </div>
                             <div class="de-flex-col header-col-mid">
                                 <ul id="mainmenu">
-                                    <li><a class="menu-item" href="{% url 'Appli:accueil' %}">ACCUEIL</a></li>
+                                    <li><a class="menu-item" href="{% url 'Appli:accueil' %}">ACCUEIL</a>
+                                        
+                                    </li>
                                     <li><a class="menu-item" href="{% url 'Appli:cars' %}">VEHICULE</a>
                                         <ul>
                                             <li><a class="menu-item" href="{% url 'Appli:cars' %}">LISTE DE VEHICULE</a></li>
+                                            
                                         </ul>
                                     </li>
-                                    <li><a class="menu-item" href="{% url 'Appli:reser' %}">RESERVER</a></li>
-                                    <li><a class="menu-item" href="#">MON COMPTE</a>
+                                    <li><a class="menu-item" href="{% url 'Appli:reser' %}">RESERVER</a>
+                                        
+                                    </li>
+                                     <li><a class="menu-item" href="{% url 'Appli:commandes' %}">MES RESERVATIONS</a>
                                         <ul>
-                                            <li><a class="menu-item" href="{% url 'Appli:commandes' %}">Mes reservations</a></li>
-                                            <li><a class="menu-item" href="{% url 'Appli:historique_reservations' %}">Historique des réservations</a></li>
-                                            <li><a class="menu-item" href="{% url 'Appli:profil' %}"> mon profil</a></li>
+                                            <li><a class="menu-item" href="{% url 'Appli:historique_reservations' %}">Historique des reservations</a></li>
+                                            
+                                        </ul>  
 
-                                        </ul>
-                                    </li>
-                                    <li><a class="menu-item" href="{% url 'Appli:propos' %}">A PROPOS DE NOUS</a></li>
-                                    <li><a class="menu-item" href="#">PAGES</a>
-                                        <ul>
-                                            <li><a class="menu-item" href="{% url 'Appli:deconnexion' %}">Se déconnecter</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
 
-                            <div class="de-flex-col">
-                                <div class="menu_side_area d-flex align-items-center gap-2">
-                                    {% if request.user.photo_profil %}
-                                        <img src="{{ request.user.photo_profil.url }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" alt="Photo de profil">
-                                    {% else %}
-                                        <img src="{% static 'assets/images/default-user.png' %}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" alt="Profil par défaut">
-                                    {% endif %}
 
-                                    <span class="text-white fw-bold d-none d-md-inline">
-                                        {{ request.user.username }}
-                                    </span>
-                                    <a href="{% url 'Appli:deconnexion' %}" class="btn-main ms-2">Se déconnecter</a>
+
+        <!-- content begin -->
+        <div class="no-bottom no-top zebra" id="content">
+            <div id="top"></div>
+            
+            <!-- section begin -->
+            <section id="subheader" class="jarallax text-light">
+                <img src="{% static 'assets/images/background/2.jpg'%}" class="jarallax-img" alt="">
+                    <div class="center-y relative text-center">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+									<h1>Vehicule</h1>
                                 </div>
+                                <div class="clearfix"></div>
                             </div>
+                        </div>
+                    </div>
+            </section>
+            <!-- section close -->
 
+            <section id="section-cars">
+                
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3">
+                           <div class="item_filter_group">
+                            <h4>Vehicle Type</h4>
+                            <form method="get" action="">
+                                <div class="de_form">
+                                    {% for type in types_vehicules %}
+                                    <div class="de_checkbox">
+                                        <input 
+                                            id="vehicle_type_{{ forloop.counter }}" 
+                                            name="types" 
+                                            type="checkbox" 
+                                            value="{{ type }}"
+                                            {% if type in selected_types %}checked{% endif %}
+                                        >
+                                        <label for="vehicle_type_{{ forloop.counter }}">{{ type }}</label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3">Filtrer</button>
+                            </form>
+                        </div>
+
+
+                        </div>
+
+                        <div class="col-lg-9">
+                            <div class="row">
+                            {% for voiture in vehicules %}
+                                <div class="col-lg-12">
+                                    <div class="de-item-list mb30">
+                                        <div class="d-img">
+                                            <img src="{{ voiture.image.url }}" class="img-fluid" alt="">
+                                        </div>
+                                        <div class="d-info">
+                                            <div class="d-text">
+                                                <h4>{{voiture.marque}} {{voiture.modele}}</h4>
+                                                <div class="d-atr-group">
+                                                   {% if voiture.caracteristiques %}
+                                                    <ul class="d-atr">
+                                                        <li><span>Sièges:</span>{{ voiture.caracteristiques.nombre_sieges }}</li>
+                                                        <li><span>Portes:</span>{{ voiture.caracteristiques.nombre_portes }}</li>
+                                                        <li><span>Carburant:</span>{{ voiture.caracteristiques.carburant }}</li>
+                                                        <li><span>Boîte:</span>{{ voiture.caracteristiques.transmission }}</li>
+                                                        <li><span>Vitesse maximum:</span>{{voiture.caracteristiques.vitesse_max}}KM/HEURE</li>
+                                                        <li><span>Climatisation:</span>{% if voiture.caracteristiques.climatisation %}Oui{% else %}Non{% endif %}</li>
+                                                        <li><span>Consommation:</span>{{voiture.caracteristiques.consommation}}L/100KM</li>
+                                                    </ul>
+                                                    {% endif %}
+
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-price">
+                                            Prix par jour <span>{{voiture.prix_par_jour}}</span>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            {%endfor%}
+                        </div>
                     </div>
                 </div>
-                {% empty %}
-                <p>aucune données</p>
-            </div>
-            {%endfor%}
-        </header>
-        <!-- header close -->
-
-        {% block navbarfooter %} {% endblock %}
-     <!-- footer begin -->
-        <footer class="text-light">
+                
+            </section>
+			
+			
+        </div>
+        <!-- content close -->
+           <footer class="text-light">
             {% for base in bases %}
             <div class="container">
                 <div class="row g-custom-x">
@@ -219,10 +285,15 @@
             </div>
              {% endfor %}
         </footer>
-        <!-- footer close -->     
-        
-      
-         
-</body>
 
-</html>                 
+        <a href="cars-list.html#" id="back-to-top"></a>
+       
+        
+    </div>
+
+    <!-- Javascript Files
+    ================================================== -->
+    <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="{% static 'assets/js/plugins.js'%}"></script>
+    <script src="{% static 'assets/js/designesia.js'%}"></script>
+
+    {% endblock %}

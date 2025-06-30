@@ -1,0 +1,122 @@
+{% extends 'Appli/base.html' %}
+{% load static %}
+{% block navbarfooter %}
+
+<div class="no-bottom no-top zebra" id="content">
+    <div id="top"></div>
+
+    <!-- section fond -->
+    <section id="subheader" class="jarallax text-light">
+        {% for fond in fonds %}
+            <img src="{{ fond.imagefond.url }}" class="jarallax-img" alt="">
+        {% endfor %}
+        <div class="center-y relative text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h1>Mon Profil</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- section profil -->
+    <section id="section-settings" class="bg-gray-100">
+        <div class="container">
+            <div class="row">
+
+                <!-- Colonne gauche -->
+                <div class="col-lg-3 mb30">
+                    <div class="card padding30 rounded-5 text-center">
+                        <form method="post" enctype="multipart/form-data" action="{% url 'Appli:profil' %}">
+                            {% csrf_token %}
+                            <div class="profile_avatar mb-3">
+                                <div class="profile_img">
+                                    <img src="{{ user.photo_profil.url }}" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" alt="Photo de profil">
+                                </div>
+                                <input type="file" name="photo_profil" accept="image/*" class="form-control mt-2">
+                                <button type="submit" class="btn btn-sm btn-primary mt-2">Modifier la photo</button>
+                            </div>
+                        </form>
+
+                        <div class="profile_name mt-4">
+                            <h4>
+                                {{ request.user.username }}<br>
+                                <span class="profile_username text-gray">{{ request.user.email }}</span>
+                            </h4>
+                        </div>
+
+                        <ul class="menu-col mt-4">
+                            <li><a href="#" class="active"><i class="fa fa-user"></i> Mon profil</a></li>
+                            <li><a href="{% url 'Appli:deconnexion' %}"><i class="fa fa-sign-out"></i> Se déconnecter</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Colonne droite -->
+                <div class="col-lg-9">
+                    <div class="card padding40 rounded-5">
+                        <form method="post" action="{% url 'Appli:modifier_profil' %}">
+                            {% csrf_token %}
+                            <div class="de_tab tab_simple">
+                                <ul class="de_nav">
+                                    <li class="active"><span>Modifier les informations</span></li>
+                                </ul>
+
+                                <div class="de_tab_content">
+                                    <div class="tab-1">
+                                        <div class="row">
+                                            <div class="col-lg-6 mb20">
+                                                <h5>Nom</h5>
+                                                <input type="text" name="last_name" value="{{ request.user.last_name }}" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-6 mb20">
+                                                <h5>Prénom</h5>
+                                                <input type="text" name="first_name" value="{{ request.user.first_name }}" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-6 mb20">
+                                                <h5>Nom d'utilisateur</h5>
+                                                <input type="text" name="username" value="{{ request.user.username }}" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-6 mb20">
+                                                <h5>Adresse e-mail</h5>
+                                                <input type="email" name="email" value="{{ request.user.email }}" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-6 mb20">
+                                                <h5>Numéro de téléphone</h5>
+                                                <input type="text" name="telephone" value="{{ request.user.telephone }}" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-6 mb20">
+                                                <h5>Domicile</h5>
+                                                <input type="text" name="adresse" value="{{ request.user.adresse }}" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-6 mb20">
+                                                <h5>Nouveau mot de passe</h5>
+                                                <input type="password" name="password" class="form-control" placeholder="********" />
+                                            </div>
+                                            <div class="col-lg-6 mb20">
+                                                <h5>Confirmer le mot de passe</h5>
+                                                <input type="password" name="password_confirm" class="form-control" placeholder="********" />
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mt-3">Mettre à jour les infos</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+<a href="#" id="back-to-top"></a>
+
+<!-- JS -->
+<script src="{% static 'assets/js/plugins.js' %}"></script>
+<script src="{% static 'assets/js/designesia.js' %}"></script>
+
+{% endblock %}

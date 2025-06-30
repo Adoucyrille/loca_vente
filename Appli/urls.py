@@ -21,6 +21,10 @@ urlpatterns = [
     path('reservation/annuler/<int:pk>/', views.annuler_reservation, name='annuler_reservation'),
     path('ajax/vehicules-disponibles/', views.get_available_vehicles, name='vehicules_disponibles'),
     path('historique/', views.historique_reservations, name='historique_reservations'),
+    path('profile/', views.mon_profil, name='profil'),
+    path('profil/modifier/', views.modifier_profil, name='modifier_profil'),
+
+
 
 
 

@@ -1018,6 +1018,7 @@ header:not(.header-mobile) #mainmenu>li:hover ul.mega {
     margin-left: 20px;
 }
 
+
 #menu-btn:before {
     font-family: FontAwesome;
     content: "\f0c9";
@@ -18698,4 +18699,9 @@ img {
         left: 0;
         top: -21px;
     }
+}
+.btn-petit-rectangle {
+    padding: 4px 8px;
+    font-size: 13px;
+    border-radius: 3px;
 }

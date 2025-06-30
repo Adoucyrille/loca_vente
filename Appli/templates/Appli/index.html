@@ -89,6 +89,7 @@
                                     <li><a class="menu-item" href="">Pages</a>
                                         <ul>
                                             <li><a class="menu-item" href="{% url 'Appli:inscrire' %}">S'inscrire</a></li>
+                                            <li><a class="menu-item" href="{% url 'Appli:connexion' %}">Se connecter</a></li>
                                         </ul>
                                     </li>
                                     <li><a class="menu-item" href="#propos">A PROPOS</a>
@@ -96,10 +97,12 @@
                                             <li><a class="menu-item" href="#propos">A PROPOS DE NOUS</a></li>
                                         </ul>
                                     </li>
+                                </ul>    
                                     
                             </div>
                             <div class="de-flex-col">
                                 <div class="menu_side_area">
+                                    <a href="{% url 'Appli:inscrire' %}" class="btn-main">S'inscrire</a>
                                     <a href="{% url 'Appli:connexion' %}" class="btn-main">Se connecter</a>
                                     <span id="menu-btn"></span>
                                 </div>
