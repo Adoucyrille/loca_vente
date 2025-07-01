@@ -31,90 +31,9 @@
        
 
         <!-- header commence -->
-        <header class="transparent scroll-light has-topbar">
-            {% for base in bases %}
-            <div id="topbar" class="topbar-dark text-light">
-                <div class="container">
-                    <p style="font-size: 25PX;" color="green">Veuillez vous connecter en cliquant sur le bouton se contecter pour plus de fonctionnalités. Merci! </p>
-                    
-                    <div class="topbar-left xs-hide">
-                        <div class="topbar-widget">
-                            <div class="topbar-widget"><i class="fa fa-phone"></i>{{base.numero}}</div>
-                            <div class="topbar-widget"><i class="fa fa-envelope"></i><span class="__cf_email__" data-cfemail="d8bbb7b6acb9bbac98aabdb6acb9b4a1f6bbb7b5">[{{base.email}}]</span></div>
-                            <div class="topbar-widget"><i class="fa fa-clock-o">Disponible en presentiel</i>{{base.jour_ouverture}} - {{base.jour_fermeture}} {{base.heure_ouverture}} - {{base.heure_fermeture}}</div>
-                        </div>
-                    </div>
-                
-                    <div class="topbar-right">
-                        <div class="social-icons">
-                            <a href="index.html#"><i class="fa fa-facebook fa-lg"></i></a>
-                            <a href="index.html#"><i class="fa fa-twitter fa-lg"></i></a>
-                            <a href="index.html#"><i class="fa fa-youtube fa-lg"></i></a>
-                            <a href="index.html#"><i class="fa fa-pinterest fa-lg"></i></a>
-                            <a href="index.html#"><i class="fa fa-instagram fa-lg"></i></a>
-                        </div>
-                    </div>  
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="de-flex sm-pt10">
-                            <div class="de-flex-col">
-                                <div class="de-flex-col">
-                                    <!-- logo begin -->
-                                    <div id="logo">
-                                        
-                                            <img class="logo-1" src="{{base.imagelogo.url}}" alt="">
-                                            <img class="logo-2" src="{{base.imagelogo.url}}" alt="">
-                                        
-                                    </div>
-                                    <!-- logo close -->
-                                </div>
-                            </div>
-                            <div class="de-flex-col header-col-mid">
-                                <ul id="mainmenu">
-                                    <li><a class="menu-item" href="#section-hero">ACCUEIL</a>
-                                        
-                                    </li>
-                                    <li><a class="menu-item" href="#section-cars">VEHICULE</a>
-                                        <ul>
-                                            <li><a class="menu-item" href="#section-cars">LISTE DE VEHICULE</a></li>
-                                            
-                                        </ul>
-                                    </li>
-                                  
-                                    
-                                    <li><a class="menu-item" href="">Pages</a>
-                                        <ul>
-                                            <li><a class="menu-item" href="{% url 'Appli:inscrire' %}">S'inscrire</a></li>
-                                            <li><a class="menu-item" href="{% url 'Appli:connexion' %}">Se connecter</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a class="menu-item" href="#propos">A PROPOS</a>
-                                        <ul>
-                                            <li><a class="menu-item" href="#propos">A PROPOS DE NOUS</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>    
-                                    
-                            </div>
-                            <div class="de-flex-col">
-                                <div class="menu_side_area">
-                                    <a href="{% url 'Appli:inscrire' %}" class="btn-main">S'inscrire</a>
-                                    <a href="{% url 'Appli:connexion' %}" class="btn-main">Se connecter</a>
-                                    <span id="menu-btn"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% empty %}
-                <p>aucune données</p>
-            </div>
-            {%endfor%}
-        </header>
+        
+        {% include 'Appli/header.html' %}
+
         <!-- header close -->
 
 <div class="no-bottom no-top" id="content">

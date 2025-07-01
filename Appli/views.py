@@ -157,6 +157,9 @@ def propos(request):
         
         })
 def connexion(request):
+        
+    bases = Base.objects.all() 
+
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -176,10 +179,15 @@ def connexion(request):
             messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
             return redirect('Appli:connexion')
 
-    return render(request, './Appli/connexion.html')  # Formulaire de connexion
+    return render(request, './Appli/connexion.html',{
+                  
+                    'bases': bases,
+
+                  })  # Formulaire de connexion
 
 def inscrire(request):
-
+ 
+    bases = Base.objects.all() 
     
     error = None
     field_errors = {}
@@ -247,6 +255,7 @@ def inscrire(request):
             return redirect('Appli:accueil')
 
     return render(request, './Appli/register.html', {
+        'bases': bases,
         'error': error,
         'field_errors': field_errors,
         'values': request.POST if request.method == 'POST' else {}
